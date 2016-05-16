@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MiniAstOOG
+Bundle-SymbolicName: MiniAstOOG;singleton:=true
+Bundle-Version: 2.0.0
+Bundle-ClassPath: .
+Require-Bundle: org.eclipse.jdt,
+ org.eclipse.jdt.core,
+ org.eclipse.core.runtime,
+ edu.cmu.cs.crystal,
+ Simple.XML
+Export-Package: adapter,
+ ast,
+ util.typehierarchy
+Bundle-ActivationPolicy: lazy
+Eclipse-RegisterBuddy: Simple.XML

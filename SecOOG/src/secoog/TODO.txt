@@ -1,0 +1,117 @@
+TODO: HIGH. Implement parent;
+TODO: HIGH. Implement children
+
+TODO: To answer reachability questions via points-to or dataflow, construct the transitive closure/transitive reduction of SecGraph.
+For graphs without dataflow cycles, transitive closure is unique.
+For graphs with cycles, transitive reduction is not uniquely defined. Can we use here the fact that OGraphs are sparse?
+
+TODO: How can we enforce invariant of one-to-one mapping between OObjects and SecObjects...
+
+TODO: LOW. Write SecVisitor's to check the well-formedness of the SecGraph: 
+- that the security properties have been set or have default values, etc.
+- that cannot have an External Interactor ... that's fully trusted, etc.
+
+TODO: in the visitor check for cycles. Are we going to allow cycles in SecGraph? probably not.
+But the Ograph can have cycles.
+
+TODO: implement a visitor for edges. One visitor for each type of edge. Be aware of cycles!
+
+
+TODO: Defining Subclasses of SecObject will make it easier to write visitors that look for only certain kinds of things
+E.g.,
+visit(ExternalInteractor node) {
+}
+
+TODO: Similarly, define multiple methods to visit each type of edge
+visit(DataFlow node) {
+}
+
+ 
+visit(PointsTo node) {
+}
+
+ 
+
+TODO: Create a factory method to create SecObjects.
+To make sure that one-to-one mapping is maintained.
+make constructor private.
+
+SecObject.create(OObject oObject) {
+}
+
+
+TODO: Do we want to follow the Eclipse AST Visitor model?
+
+// Order:
+// 1. preVisit(general type); Visits the given AST node prior to the type-specific visit
+// 2. visit(type specific) 
+// 3. endvisit(type specific)
+// 4. postVisit(general type): Visits the given AST node following the type-specific visit after endVisit
+
+
+
+TODO: RootSecObject...
+1 instance of that,.
+
+Add a check that 
+o instanceof RootSecObject ... 
+then you know you reached the root.
+
+In Acme, 
+"Component"
+and "System".
+
+The System is the root.
+
+
+TODO: Figure out if we need to implement value equality on:
+(check pitfalls for equals in Effective Java)
+- OObject, OEdge
+- SecObject, SecEdge
+
+TODO: HIGH. Serialize the SecGraph.
+
+TODO: HIGH. Not sure if we need to extract interfaces.
+- May not hurt
+- At the very least, encapsulate fields.
+ 
+-----------------------------------------------------------------------------------------------------
+WACI. Do we need to implement "value equality" on a SecObject:
+- equals includes all the fields on SecObject, including 'trustLevel', etc.
+- The goal is to find "clones" or "copies" of objects that contain sensitive data.
+WACI. How can we have the architect write a constraints to detect "clones"/copies:
+- (shallow copies vs. deep copies)
+- e.g,. by chasing points-to edges can identity shallow copies
+
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: Move some functionality from SecGraph to OGraph:
+- That does not depend on properties, etc.
+- getParents(), getAncestors(), getDescendants()...
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: HIGH. XXX. Avoid overloading the same method name or very close names between SecObject and OObject:
+- SecObject:: Set<SecObject> getParents()
+vs.
+- OObject: public IDomain getParent()
+
+- SecObject: Set<SecObject> getChildren()
+vs.
+OObject: Set<IDomain> getChildren() {
+
+Apply rename refactoring to SecGraph.
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: HIGH. XXX. Make the SecGraph classes implement the oog.itf interfaces.
+- pre-factor/re-factor as needed
+
+-----------------------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------------------------------
+
+

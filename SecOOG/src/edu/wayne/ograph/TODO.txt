@@ -1,0 +1,68 @@
+TODO: HIGH. Implement parent;
+TODO: HIGH. Implement children
+
+TODO: do we want to do something smart about visiting edges? Like a lifted edge has children?
+TODO: LOW: add lifted edges.
+
+
+TODO: LOW. Add a lookup from OEdge -> SecEdge? Using the SecMap?
+
+public class OObject extends SecElement {
+	
+	public SecObject getSecObject(){
+		// Use the map...
+	}
+	
+}
+
+TODO: Figure out if we need to implement value equality.
+ 
+TODO: Make empty setters final.
+- So implementors cannot break this.
+ 
+DELETE empty setters that we added for serialization only.
+
+There is a cleaner way to deal with immutable fields. For those:
+1. You specify the annotation on the field (or on the getter):
+2. You specify the annotation as part of the constructor parameters; NOTE: you must also specify the field name to which it corresponds. 
+
+
+See:
+Constructor injection
+http://simple.sourceforge.net/download/stream/doc/tutorial/tutorial.php
+
+OR:
+
+http://www.ibm.com/developerworks/library/x-simplexobjs/index.html
+  
+  
+According to doc, should be possible to add the annotation on the getter.
+and the constructor argument.
+But does not seem to work.
+
+TODO: maybe it's a matter of upgrading Simple.XML version.
+
+May still need empty setters.. when there is no field.
+just computing synthetic getter information.
+
+
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: LOW. Instead of using this post-processing to finish initializing the object graph,
+use the @Validate, @Commit, from Simple.XML framework
+	   
+	@Validate
+	public void validate(Map session) throws PersistenceException {
+		if (session.isEmpty()) {
+		}
+	}
+
+	@Commit
+	public void commit(Map session) {
+		Set keys = session.keySet();
+	}
+	
+-----------------------------------------------------------------------------------------------------
+
+	

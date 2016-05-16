@@ -1,0 +1,17 @@
+Set GraphViz color scheme:
+http://www.graphviz.org/doc/info/colors.html
+
+Color names are resolved in the context of a color scheme. 
+Graphviz currently supports the X11 scheme, the SVG scheme, and the Brewer schemes, with X11 being the default.
+
+
+http://www.graphviz.org/doc/info/attrs.html#d:colorscheme
+
+XXX. DOT colors/settings are scattered everywhere...
+- consolidate into one place
+- use a property file
+
+
+XXX. What about B&W printout:
+- trustLevel #,+,-
+
