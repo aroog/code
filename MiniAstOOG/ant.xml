@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Ant" default="DOIT" basedir=".">
+	<property name="build" location="build"/>
+	<target name ="makejar" description="Create a jar for the project">
+		<jar jarfile="${build}/edu.wayne.ast.jar" basedir="bin"/>
+	</target>
+	<target name="copyToArchTrace">
+		<copy file="${build}/edu.wayne.ast.jar" todir="C:/Eclipse3.7/workspace/ArchTrace/lib/" overwrite="true"/>
+	</target>
+	<target name="copyToPointsToOOG">
+		<copy file="${build}/edu.wayne.ast.jar" todir="C:/Eclipse3.7/workspace/PointsToOOG/lib/" overwrite="true"/>
+	</target>
+	<target name="copyToSecOOG">
+		<copy file="${build}/edu.wayne.ast.jar" todir="C:/Eclipse3.7/workspace/SecOOG/lib/" overwrite="true"/>
+	</target>		
+	<target name="copyToArchMetrics">
+		<copy file="${build}/edu.wayne.ast.jar" todir="C:/Eclipse3.7/workspace/ArchMetrics/lib/" overwrite="true"/>
+	</target>
+	<target name="copyToArchSummary">
+		<copy file="${build}/edu.wayne.ast.jar" todir="C:/Eclipse3.7/workspace/ArchSummary/lib/" overwrite="true"/>
+	</target>
+	<target name="copyToArchDoc">
+		<copy file="${build}/edu.wayne.ast.jar" todir="C:/Eclipse3.7/workspace/ArchDoc/lib/" overwrite="true"/>
+	</target>
+	<target name="copyToArchDefault">
+		<copy file="${build}/edu.wayne.ast.jar" todir="C:/Eclipse3.7/workspace/ArchDefault/lib/" overwrite="true"/>
+	</target>
+	<target name="copyToMOOG">
+		<copy file="${build}/edu.wayne.ast.jar" todir="C:/Eclipse3.7/workspace/MOOG/lib/" overwrite="true"/>
+	</target>	
+	<target name="copyToMOOGREX">
+		<copy file="${build}/edu.wayne.ast.jar" todir="C:/Eclipse3.7/workspace/MOOGREX/lib/" overwrite="true"/>
+	</target>
+	<target name="copyToOOGRE">
+		<copy file="${build}/edu.wayne.ast.jar" todir="C:/Eclipse3.7/workspace/OOGRE/lib/" overwrite="true"/>
+	</target>	
+	<target name="DOIT">
+		<antcall target="makejar" />
+		<antcall target="copyToArchTrace" />
+		<antcall target="copyToPointsToOOG" />
+		<antcall target="copyToSecOOG" />
+		<antcall target="copyToArchMetrics" />
+		<antcall target="copyToArchSummary" />				
+		<antcall target="copyToArchDoc" />
+		<antcall target="copyToArchDefault" />		
+		<antcall target="copyToMOOG" />
+		<antcall target="copyToMOOGREX" />
+		<antcall target="copyToOOGRE" />		
+	</target>
+</project>
