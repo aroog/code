@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="edu.cmu.cs.crystal.CrystalAnalysis">
+      <analysis
+            class="edu.wayne.pointsto.PointsToAnalysis"
+            name="PointsToAnalysis">
+      </analysis>
+   </extension>
+   <extension
+         point="edu.cmu.cs.crystal.CrystalAnalysis">
+      <analysis
+            class="edu.wayne.legacy.AliasXMLLoader"
+            name="AliasXML Loader">
+      </analysis>
+   </extension>
+
+ 
+ 
+ </plugin>
