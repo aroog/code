@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="edu.cmu.cs.crystal.CrystalAnalysis">
+      <analysis
+            class="moogrex.analysis.MotherAnalysis"
+            name="moogrex.analysis.MotherAnalysis">
+      </analysis>
+   </extension>
+   <extension
+         point="edu.cmu.cs.crystal.CrystalAnalysis">
+      <analysis
+            class="moogrex.testing.BatchAnalysis"
+            name="moogrex.testing.BatchAnalysis">
+      </analysis>
+   </extension>
+
+</plugin>
