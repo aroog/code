@@ -17,3 +17,4 @@ Export-Package: oog.common,
  oog.re
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: Simple.XML
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
