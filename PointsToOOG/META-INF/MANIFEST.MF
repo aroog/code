@@ -15,7 +15,8 @@ Require-Bundle: edu.cmu.cs.crystal,
  MiniAstOOG,
  SecOOG,
  MOOG,
- Simple.XML
+ Simple.XML,
+ org.junit
 Bundle-ClassPath: .,
  lib/edu.cmu.cs.aliasjava.parser.jar,
  lib/edu.cmu.cs.aliasxml.jar,
