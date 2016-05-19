@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Ant" default="DOIT" basedir=".">
+	<property name="build" location="build"/>
+	<target name ="makejar" description="Create a jar for the project">
+		<jar jarfile="${build}/edu.wayne.summary.jar" basedir="bin"/>
+	</target>
+	<target name="copyToArchDoc">
+		<copy file="${build}/edu.wayne.summary.jar" todir="C:\Eclipse3.7\workspace\ArchDoc\lib" overwrite="true"/>
+	</target>
+
+	<target name="DOIT">
+		<antcall target="makejar" />
+		<antcall target="copyToArchDoc" />
+	</target>
+</project>
