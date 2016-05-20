@@ -27,7 +27,7 @@ List of contributors:
 ---------------------
 
 * Marwan Abi-Antoun
-* Radu Vanciu: PointsToOOG, SecOOG, MiniAstOOG
+* Radu Vanciu: PointsToOOG, SecOOG, MiniAstOOG, ArchMetrics
 * Ebrahim Khalaj: OOGRE
 * Andrew Giang: ArchDoc, MiniAstOOG, ArchTrace, ArchSummary, ArchMetrics
 * Ahmad Moghimi: OOGWeb, OOGEclipsePlugin

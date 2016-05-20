@@ -4,3 +4,5 @@ List of Contributors:
 ---------------------
 * Marwan Abi-Antoun
 * Andrew Giang
+* Wesley Trescott
+
