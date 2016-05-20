@@ -1,4 +1,5 @@
-SecOOG: 
-This is the main component for the security queries and constraints in Scoria.
+SecOOG:
+ 
+The query and analysis engine for setting security properties, writing security queries and constraints in Scoria.
 
 
