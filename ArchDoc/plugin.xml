@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="OOG UI Category"
+            id="OOG_UI_Category_ID">
+      </category>
+      
+       <view
+        	category="OOG_UI_Category_ID"
+            class="oog.ui.views.AbstractObjectTreeView"
+            id="oog.ui.views.AbstractObjectTreeView"
+            name="Abstract Object Tree">
+      </view>
+      <view
+       category="OOG_UI_Category_ID"
+            class="oog.ui.views.SummaryView"
+            id="oog.ui.views.SummaryView"
+            name="Summary View">
+      </view>
+      <view
+       category="OOG_UI_Category_ID"
+            class="oog.ui.views.AbstractStackView"
+            id="oog.ui.views.AbstractStackView"
+            name="Abstract Stack ">
+      </view>
+      <view
+       category="OOG_UI_Category_ID"
+            class="oog.ui.views.PartialOOG"
+            id="oog.ui.views.PartialOOG"
+            name="Graph View">
+      </view>
+      <view
+            category="OOG_UI_Category_ID"
+            class="oog.ui.views.RelatedObjectsEdges"
+            id="oog.ui.views.RelatedObjectsEdges"
+            name="Related Objects and Edges">
+      </view>
+      <view
+      		category="OOG_UI_Category_ID"
+            class="oog.ui.views.ObjectSearchView"
+            id="oog.ui.views.ObjectSearchView"
+            name="Object Search">
+      </view>
+      <view
+      		category="OOG_UI_Category_ID"
+            class="oog.ui.views.PartialTypeGraph"
+            id="oog.ui.views.PartialTypeGraph"
+            name="Partial Type Graph">
+      </view>
+      <view
+            category="OOG_UI_Category_ID"
+            class="oog.ui.views.ObjectTreeView"
+            id="oog.ui.views.ObjectTreeView"
+            name="OOGRE Tree">
+      </view>
+      <view
+            category="OOG_UI_Category_ID"
+            class="oog.ui.views.OOGREView"
+            id="oog.ui.views.OOGREView"
+            name="OOGRE Graph"
+            restorable="true">
+      </view>
+
+   </extension>
+<extension point="org.eclipse.ui.perspectives">
+   <perspective
+         class="oog.ui.perspective.RuntimePerspective"
+         id="oog.ui.perspective.RuntimePerspective"
+         name="Runtime Perspective">
+   </perspective>
+</extension>
+<extension
+      point="org.eclipse.jdt.ui.javaEditorTextHovers">
+   <hover
+         activate="true"
+         class="oog.ui.InterfaceTextHover"
+         id="oog.ui.InterfaceTextHover">
+   </hover>
+</extension>
+<extension
+      point="org.eclipse.ui.preferencePages">
+   <page
+         class="oog.ui.ArchDocPreferencePage"
+         id="ArchDocPreferencePage"
+         name="ArchDoc">
+   </page>
+</extension>
+
+<extension
+      point="org.eclipse.ui.viewActions">
+   <viewContribution
+         id="ArchDoc.viewContribution"
+         targetID="oog.ui.views.PartialOOG">
+         <menu
+               id="pulldownMenu"
+               label="Pulldown Menu"
+               path="additions">
+         </menu>
+         <action
+               class="oog.ui.actions.ShowPTEdgeAction"
+               id="oog.ui.actions.ShowPTEdgeAction"
+               menubarPath="pulldown"
+               label="Show Points-to Edge"
+               style="toggle"
+               state="true">
+         </action>
+         <action
+               class="oog.ui.actions.ShowDFEdgeAction"
+               id="oog.ui.actions.ShowDFEdgeAction"
+               menubarPath="pulldown"
+               label="Show Dataflow Edge"
+               style="toggle"
+               state="true">
+         </action>
+         <action
+               class="oog.ui.actions.ShowCREdgeAction"
+               id="oog.ui.actions.ShowCREdgeAction"
+               menubarPath="pulldown"
+               label="Show Creation Edge"
+               style="toggle"
+               state="true">
+         </action>
+         <action
+               class="oog.ui.actions.ShowCFEdgeAction"
+               id="oog.ui.actions.ShowCFEdgeAction"
+               menubarPath="pulldown"
+               label="Show Control flow Edge"
+               style="toggle"
+               state="true">
+         </action>
+         
+          <action
+               class="oog.ui.actions.HideAllAction"
+               id="oog.ui.actions.HideAllAction"
+               menubarPath="pulldown"
+               label="Hide All"
+               style="push"
+               >
+         </action>
+         <action
+               class="oog.ui.actions.ShowAllAction"
+               id="oog.ui.actions.ShowAllAction"
+               menubarPath="pulldown"
+               label="Show All"
+               style="push"
+               >
+         </action>
+   </viewContribution>
+</extension>
+
+<extension
+      point="org.eclipse.ui.menus">
+   <menuContribution
+         locationURI="popup:org.eclipse.jdt.ui.CompilationUnitEditor.EditorContext?before=additions">
+    <command
+	   commandId="oog.ui.views.search"
+	   label="Find Instances"
+	   style="push">
+	   </command>
+	</menuContribution>
+</extension>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="oog.ui.SearchHandler"
+            id="oog.ui.views.search"
+            name="Open Objects and Edges">
+      </command>
+   </extension>
+
+<extension point="org.eclipse.ui.actionSets">
+	<actionSet
+			label="ArchDoc.actionSet"
+			visible="true"
+			id="ArchDoc.actionSet">
+		<menu
+         	id="ArchSummary.menu"
+         	label="&amp;ArchSummary">
+         	<groupMarker name="ArchSummary.group"/>
+		 	<separator
+				name="ArchSummary.sep">
+		 	</separator>
+		 	<groupMarker name="ArchSummary.Log"/>
+ 	 	</menu>
+   	  	<action
+         	class="oog.logging.LogStopAction"
+         	id="ArchDoc.LogStopAction"
+         	label="Stop logging..."
+         	menubarPath="ArchSummary.menu/ArchSummary.Log"
+         	style="push">
+   		</action>
+   		<action
+         	class="oog.logging.LogAction"
+         	id="ArchDoc.LogAction"
+         	label="Logging..."
+         	menubarPath="ArchSummary.menu/ArchSummary.Log"
+         	style="push">
+   		</action>
+	</actionSet>
+</extension>
+</plugin>
