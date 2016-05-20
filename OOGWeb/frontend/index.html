@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="project">
+    <head>        
+        <title>OOGWeb</title> 
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.min.css" />
+        <link rel="stylesheet" href="lib/jstree/themes/default/style.min.css" />
+        <link rel="stylesheet" href="lib/prism/prism.css" />
+        <link rel="stylesheet" href="lib/contextmenu/contextmenu.css" />        
+        <link rel="stylesheet" href="style.css" />    
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->    
+               <div class="navbar-header">        
+                   <a href="/#/"><h4><small>OOG web</small></h4></a>
+                </div>    
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">         
+                <ul class="nav navbar-nav  navbar-right">        
+                    <li><a href="/#/help">Help</a></li>        
+                    <li><a href="/#/">Home</a></li>        
+                </ul>          
+            </div><!-- /.navbar-collapse -->
+          </div>
+        </nav>  
+        <div class="container-fluid" ng-view>  
+            <!-- Subviews go there -->
+        </div>        
+        
+        <script src="lib/jquery/jquery-1.11.3.min.js"></script>
+        <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="lib/jstree/jstree.min.js"></script>        
+        <script src="lib/angular/angular.min.js"></script>
+        <script src="lib/angular/angular-route.min.js"></script>
+        <script src="lib/angular/angular-resource.min.js"></script>        
+        <script src="lib/prism/prism.js"></script>        
+        <script src="lib/contextmenu/contextmenu.js"></script>
+        <script src="lib/jsoneditor/jsoneditor.js"></script>
+        <script src="lib/underscore/underscore-min.js"></script>
+        <script src="app.js"></script>
+        <script src="directive/tabs.js"></script>
+        <script src="factory/api.js"></script>
+        <script src="controller/main.js"></script>
+        <script src="controller/tree.js"></script>
+        <script src="controller/properties.js"></script>                
+        <script src="directive/ng-jsoneditor.js"></script>
+    </body>
+</html>
+

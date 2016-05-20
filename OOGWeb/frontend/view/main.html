@@ -1,0 +1,9 @@
+<ul>
+    <li ng-repeat="plugin in plugins" id="plugin.id">
+        <a href="#/tree/{{plugin.id}}">{{plugin.project}}</a>        
+    </li>
+</ul>
+
+<div ng-controller="MainCtrl">
+   <div class="nostyle" ng-jsoneditor ng-model="obj.data" options="obj.options" schema="obj.options.schema" style="width: 400px; height: 300px;"></div>
+</div>

@@ -1,0 +1,12 @@
+Deployment:
+   1. Setup nodejs from https://nodejs.org
+	Currently using: 4.2.3
+	Use default options
+
+
+   1. Setup Couch DB from http://docs.couchdb.org/en/1.6.1/install/index.html
+   2. `npm install` in the current directory to setup library dependencies
+   3. `node .` to run the web server on port 80 or send a port number argument 
+       like `node . 1080` to run on different port
+   4. You can manage Couch DB database at this address http://127.0.0.1:5984/_utils/
+ 

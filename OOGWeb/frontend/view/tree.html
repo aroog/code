@@ -1,0 +1,205 @@
+<div ng-show="loading" class="loading"></div>
+<div class="row">
+	<div class="col-md-3">
+		<div class="row">
+			<div class="panel  panel-success  ">
+				<div class="panel-heading clearfix">
+					<h4 class="panel-title pull-left">Object Tree</h4>
+				</div>
+				<div class="panel-body">
+					<div id="treeContainer">
+						<div id="jstree"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel  panel-success  ">
+				<div class="panel-heading clearfix">
+					<h4 class="panel-title pull-left">Refinement List</h4>
+					<div class="btn-group pull-right">
+						<button type="button" ng-click="addRefine()" ng-show="pendingAddRefine" class="btn btn-xs btn-success btn-circle"><i class="glyphicon glyphicon-ok"></i></button>
+						<button type="button" ng-show="pendingAddRefine" ng-click="cancelRefine()" class="btn btn-xs btn-danger btn-circle"><i class="glyphicon glyphicon-remove"></i></button>
+						<button type="button" ng-show="!refinementProcessing" ng-click="submitRefine()" class="btn btn-xs btn-success btn-circle"><i class="glyphicon glyphicon-upload"></i></button>
+					</div>
+				</div>
+				<div class="panel-body" id="refineTableContainer">
+					<table id="refineTable" ng-show="refinements.length > 0" class="table table-condensed">
+						<thead>
+							<tr>
+								<th>Type</th>
+								<th>ID</th>
+								<th>Source</th>
+								<th>Destination</th>
+								<th>Domain</th>
+								<th>State</th>
+							</tr>
+						</thead>
+						<tr class="{{ r.state === 'Pending' ? 'highlight' : '' }}" ng-repeat="r in refinements">
+							<td>{{r.type}}</td>
+							<td>{{r.refId}}</td>
+							<td>{{r.srcObjectCaption ? r.srcObjectCaption : r.srcObject}}</td>
+							<td>{{r.dstObjectCaption ? r.dstObjectCaption : r.dstObject}}</td>
+							<td>{{r.dstDomain}}</td>
+							<td>{{r.state}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="row">
+			<div class="panel panel-success">
+				<div class="panel-heading clearfix">
+					<h4 class="panel-title pull-left">Code with annotations</h4></div>
+				<div class="panel-body">
+					<div id="codeContainer">
+						<div class="list-group">
+							<a ng-repeat="trace in currentTraces |  orderBy:['resource','line']" ng-click="triggerShowCode(trace)" class="list-group-item">
+								<b>Resource: </b>{{trace.resource}}, <b>Line: </b>{{trace.line}}
+							</a>
+						</div>
+						<pre><code id="sourceCode" class="language-java  line-numbers" >    
+						</code></pre>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel  panel-success  ">
+				<div class="panel-heading clearfix">
+					<h4 class="panel-title pull-left">Object Graphs</h4>
+					<div class="btn-group pull-right">
+						<button type="button" ng-click="zoomIn()" class="btn btn-xs btn-success btn-circle "><i class="glyphicon glyphicon-zoom-in"></i></button>
+						<button type="button" ng-click="zoomOut()" class="btn btn-xs btn-success btn-circle "><i class="glyphicon glyphicon-zoom-out"></i></button>
+					</div>
+				</div>
+				<div class="panel-body">
+					<tabs>
+						<pane on-select="setCurrentGraph('graphContainer')" title="Display Graph">
+							<div id="graphContainer">
+							</div>
+						</pane>
+						<pane on-select="setCurrentGraph('graphContainer2')" title="Object Graph">
+							 <div id="graphContainer2">
+							</div>
+						</pane>
+					</tabs>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div class="row">
+			<div class="panel panel-success">
+				<div class="panel-heading clearfix">
+					<h4 class="panel-title pull-left">Property Editor</h4>
+					<div ng-show="jsonEditor && jsonEditor.getValue() && (jsonEditor.getValue().objectKey || jsonEditor.getValue().settingsKey)"  class="btn-group pull-right">
+						<button type="button" ng-click="saveProperties(jsonEditor.getValue())" class="btn btn-xs btn-success btn-circle">
+							<i class="glyphicon glyphicon-upload"></i>
+						</button>
+					</div>
+				</div>
+				<div ng-show="obj.options.schema" class="panel-body">
+					<div ng-jsoneditor="editorLoaded" ng-model="obj.data" options="obj.options" schema="obj.options.schema"></div>
+				</div>
+			</div>		
+		</div>
+		<div class="row">
+			<div class="panel  panel-success  ">
+				<div class="panel-heading clearfix">
+					<h4 class="panel-title pull-left">Query Builder</h4> 
+					<div class="btn-group pull-right">  	
+						<button class="btn btn-xs" ng-click="toggleSelectMode()" type="button">
+							<i ng-show="!selectMode" class="glyphicon glyphicon-chevron-right"></i>
+							<i ng-show="selectMode" class="glyphicon glyphicon-chevron-down"></i>
+						</button>
+					</div>
+				</div>
+				<div class="panel-body" ng-show="selectMode">
+					<table id="secQueryTable" class="table table-striped  table-condensed">
+						<thead>
+							<th>Node List</th>
+						</thead>
+						<tbody>
+							<tr ng-repeat="node in selectedSecurity.nodes">
+								<td>{{$index+1}}.&nbsp<span>{{node.view}}</span></td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="table">
+						<thead><th>Query Selector</th></thead>
+						<tbody>
+							<tr>
+								<td>
+									<select class="form-control input-sm" ng-change="adjustSecParams()" ng-model="selectedSecurity.type">
+										<optgroup label="Using selected objects">
+											<option value="Provenance" ng-selected="selectedSecurity.type === 'Provenance'">Provenance</option>
+											<option value="Transitivity" ng-selected="selectedSecurity.type === 'Transitivity'">Transitivity</option>
+											<option value="Hierarchy" ng-selected="selectedSecurity.type === 'Hierarchy'">Hierarchy</option>
+											<option value="Reachability" ng-selected="selectedSecurity.type === 'Reachability'">Reachability</option>
+											<option value="IndirectComm" ng-selected="selectedSecurity.type === 'IndirectComm'">Indirect Comm.</option>
+											<option value="EdgesBetween" ng-selected="selectedSecurity.type === 'EdgesBetween'">Edges Between</option>
+										</optgroup>
+										<optgroup label="Using security properties">
+											<option value="InformationDisclosure" ng-selected="selectedSecurity.type === 'InformationDisclosure'">Information Disclosure</option>
+											<option value="Tampering" ng-selected="selectedSecurity.type === 'Tampering'">Tampering</option>
+											<option value="CustomProperties" ng-selected="selectedSecurity.type === 'CustomProperties'">Select custom properties</option>
+										</optgroup>
+									</select>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="btn-group pull-right">
+						<button class="btn btn-xs btn-danger" ng-click="toggleSelectMode()" type="button">Cancel</button>
+						<button class="btn btn-xs btn-success" ng-click="analyzeSecurity()" type="button">Analyze</button>
+						<button class="btn btn-xs btn-primary" ng-click="exportSecQueries()" type="button">Export</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="panel  panel-success  ">
+		<div class="panel-heading clearfix">
+			<h4 class="panel-title pull-left">Messages</h4>
+		</div>
+		<div class="panel-body">
+			<div id="infoTableContainer">
+				<table id="infoTable" class="table table-condensed table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>
+								Description
+							</th>
+							<th>
+								Type
+							</th>
+							<th>
+								Source
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="notification in notifications">
+							<td>
+								<a ng-click="highlightTreeNode(notification.source)" ng-bind-html="notification.desc"></a>
+							</td>
+							<td>
+								{{ notification.type }}
+							</td>
+							<td>
+								{{ notification.source }}
+							</td>
+						</tr>
+				   
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

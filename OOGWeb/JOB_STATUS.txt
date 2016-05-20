@@ -1,0 +1,14 @@
+NOTE: status value is incremented during the lifecycle of a job
+
+Status 0 // Job created
+Status 1 // Job sent to the plugin
+Status 2 // Job processed by plugin
+Status 3 // Job result fetched by web.
+means the job is done.
+but could still be failed down.
+if JSON object == null, then there was a failure.
+
+Timers:
+1s: for most jobs
+3s: for do refinement
+
