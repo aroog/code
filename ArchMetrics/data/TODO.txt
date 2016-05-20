@@ -1,0 +1,16 @@
+Use Gnumeric
+
+Guidelines:
+- One tab per metric
+- Put the data on top
+- Put the charts at the bottom
+- Make the charts of the same size, so when they are exported to EPS, they will all be of the same size in the paper.
+
+
+- Right-click on a chart, Save as Image, and under File Type, pick EPS.
+
+- Figure out if we can change the default settings for all the charts: 
+-- Colors that are easy to read in a B&W printout;
+-- Font; 
+-- Background color (avoid gray);
+-- etc.

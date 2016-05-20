@@ -1,0 +1,81 @@
+HIGH: DONE. DFEdgePrecision class is one hot mess:
+- split very long method into multiple methods, one for each metric case
+- apply Extract Method refactorings
+
+HIGH:DONE. CLEANUP. Some methods are private static, some are not static, they all seem very similar:
+getConcreteClassesRecv
+
+HIGH: Q_DEFP does not deal with methods yet:
+- just has fields
+- the whole point was to learn something about methods
+- start working on this
+
+ Q_DFEP is mostly copy-pasted from the others, and is incrementing the *same* counters (stored as fields). 
+ Until you figure things out, it is best to avoid copy-paste or unintended side effects. 
+ If this is not done, leave it blank with some TODO.
+ 
+
+DONE.: EXPORT methInvk, field read, field write *expression* to the verbose output for DFEP
+- to simplify the debugging
+
+
+DONE.: EXPORT *domain* information to the verbose output for 1MInE, 1FRnE, 1FWnE:
+- both formals and actuals
+- to better understand what's going on
+- (still being added to MiniAST)
+
+Added place holders. Domains Null as of now. So added the place holders for the columns.
+
+VHIGH. DONE. HowManyEdgesToMethodInvok:
+- does not handle all cases: RetType, RecvType, Argtype;
+
+TOMAR: I need some clarifications on this.
+Does handle not separate cases as of now. There may be "hybrid" cases that is combination of more than 1 sub metric. 
+How do we handle such cases?
+TOSUM: Figure it out. You formalized several metrics. Can you implement several metrics?
+
+APPROACH: First, we decided to implement 1 to many mapping between code elements and IElements, just like 1FnE
+but based on Dataflow edges and not points-to edges. The metrics were 1MInE, 1FRnE and 1FWnE. We ran the metrics across all the 8 subject systems.
+When I looked at the data, I had the following thought. "Why not measure 'why/causes' MIs, FRs, FWs have multiple edges? 
+Looking at the data and the code for MD, DL receiver types, argument types etc were part of Type hierarchy. The source/destination OObjects of the edges 
+were objects of subtypes of receiver types, argument types etc. But the same was not the case in CDB, AFS. So, thought about new measures (1MInE_RecType etc).
+
+Brain storming: 
+1) Could it be possible for us to define some OO (object-oriented) index using these metrics that indicates of how OO a system is?
+2) Let us keep the original 1MInE, 1FRnE, 1FWnE also. We need not use it for the journal, but until we discharge their use to write security constraint. 
+Anamul did say they were useful. 
+
+TOSUM: VHIGH. DONE. RUN FindBugs on your code:
+- dereferencing a pointer;
+- then checking that not null later.
+- Very good practice to run FindBugs here
+
+				FieldAccess fieldRead = entry.getKey();
+				Type recvType = fieldRead.recvType;
+				FieldAccess read_RecType = null;
+
+
+				for (IElement element : elems) {
+						if (flag == "Import" && recvType != null && fieldRead != null) {
+						
+						
+FindBugs warnings to fix:
+- string comparison
+- nullcheck of value previously deferenced
+- possible NPE
+
+
+More Notes:
+Some edges from 1MInE are not found in any of the new metrics:
+
+1) The return type of the corresponding method declaration = the type of OFlow 
+2) The argument types of the method invocations = the type of OFlow
+
+Reasoning out: We are trying to measure the effect of type hierarchy on the OFlow objects. The edges are in 1MInE, so not totally ignored.
+
+Some edges from 1FRnE/ 1FWnE are not found in any of the new metrics:
+
+1) The receiver types are the same as the type of source OObjects
+2) The field types are part of type hierarchy. We have not captured them yet. May be, at some point, add another metrics.
+
+

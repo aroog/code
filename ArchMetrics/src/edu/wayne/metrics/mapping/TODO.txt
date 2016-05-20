@@ -1,0 +1,47 @@
+Add options for the Map:
+
+- List of excludes
+
+- Use package, or list type
+
+- Use qualified names:
+-- Should be always true
+
+
+
+TODO: Create singleton to expose the map to the rest of ArchMetrics:
+- load the XML once (per invocation of the metrics)
+
+
+
+TODO: Figure out business of location/filename of the map being loaded
+
+TOSUM: TODO: Move stuff to Model class.
+
+TOSUM: TODO: HIGH. Work on the GenerateDefaultMap to populate the initial map:
+- Move some of the logic there
+- XXX. avoid storing everything but the kitchen sink in that file
+-- Try to compute things on the fly as much as possible
+-- Store the minimal amount of information
+-- E.g., no need to store list of abstract classes; can find out from ITypeBinding is a class is abstract
+-- E.g., no need to store list of interfaces; can find out from ITypeBinding is a type is an interface
+
+TOSUM: TODO: LOW. Add feature to validate the contents of the file:
+- e.g., check for duplicates
+- check for inconsistencies between the lists
+-- e.g., the same type is listed both as a framework type AND an application type 
+
+-----------------------------------------------------------------------------------------------------
+
+XXX. Need to look at some of entries in metrics_map.xml:
+- File is not a DataClass (which means a class with just fields, getters/setters, no behavior)
+-- File has a ton of a behavior: Open, Close, Read, Write, etc.
+
+- Position could be a DataClass: it just stores (x,y) coordinates
+
+XXX. Let's collect all the unsure classifiers, then revise them for all systems
+  
+-----------------------------------------------------------------------------------------------------
+
+
+  

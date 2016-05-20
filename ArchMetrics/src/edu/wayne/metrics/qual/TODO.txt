@@ -1,0 +1,169 @@
+TODO: HIGH. General type is more than just interfaces.
+Could be abstract class.
+
+- Extract a method into QualUtils, with the common logic:
+-- Consolidate most of the logic into QualUtils
+
+Util.isOfGeneralType()
+
+- Add only **stubs** or signatures to to QualUtils
+-- Convert invalid Java code like:
+HashSet<Interface>.contains
+
+to actual code/methods added to QualUtils, 
+so we can figure out all the information we need.
+
+It's OK to leave method bodies empty or commented out.
+
+XXX. Avoid code/method duplication in QualUtils
+Avoid simimilar name methods that do the same thing
+
+e.g., isOfInterfaceType vs. isOfGeneralType
+OR: have isOfGeneralType call isOfInterfaceType then isAbstractClass
+
+ 
+Uncomment out the parts that are there.
+Minimize the amount of commented out code (really hard to read)
+
+-----------------------------------------------------------------------------------------------------
+
+Iteration 1: 
+- Hard-code the various types in the lists based on MD
+- Write the visitors and get them to work on MD automatically based on hard-coded input
+- Have the visitor output match at least partially the manual output that you came up with 
+- Ideally, we can convert these things to unit tests that we run on MD down the road
+
+
+Iteration 2: Figure out how to populate those lists
+- Use external file (XML)
+- Populate the external file for System X
+-- Just have to change the init* methods
+-- load the information from the XML files; and put it in the various fields
+- Run the visitors on System X
+
+-----------------------------------------------------------------------------------------------------
+
+Iteration 1:
+TraceToCodeUIAction: OK to use for now.
+Ideally, try not to use it later on.
+
+Also, handle simple programs: 
+a = b;
+
+Later on, may need to handle more complex expressions: 
+a = b = c;
+
+
+TOSUM: 
+1) To others or unknown even when all data are classified - DONE
+2) Fix bug in WhichA_in_WhichB - DONE
+3) Check in all of them , no one thing has two classifications - DONE
+4) Add an header before the Summary -  DONE
+5) Validation - all things in the classification must occur in the outliers.
+Validations has mismatches for 2 metrics (1 mismatch for each metric), I know why, I am working on it, I might need Andrews help tomorrow.
+6) Pulled objects - in the data file, clean up the classification names -DONE
+7) process the raws for whicha_in_b - DONE
+
+
+TOAND : Q_Which_A_In_B_Raw and Q_Which_A_In_Which_B have 1 outlier that is missing 
+this is because of newExpType(firstObj) || newExpType(secondObj) ==NULL. newExpType is a method in QualUtils to get the type 
+from the expression using ASTNode. I am not sure why the lefthand side expression from AST Nodes empty. Could you help me with 
+that tomorrow if you are in?
+
+TOSUM: Add number of outliers and add total count of classification in two separate line
+1) Default - Application
+2) Check why do we have exception classification if not in data?
+
+-----------------------------------------------------------------------------------------------------
+
+Code with annotations:
+Annotations -> OOG -> Metrics -> Outliers -> Classification -> Visitors to count classification
+
+Code without annotations:
+Code -> Visitors -> to count classification.
+
+See ArchMetrics\TODO.txt "Test1"
+
+ 
+TOSUM: TODO: HIGH. DONE. Refactor visitors so they can run on Eclipse AST directly:
+- Extract logic that does not use OOGs, MiniAST, etc.
+- How to:
+-- Extract logic method from each qual visitor
+-- The logic method should use only ITypeBinding, etc. from Eclipse AST or Type Binding hierarchy
+-- Move logic method to QualUtils
+-- Create another qual visitor (qual') that just uses the logic method
+
+
+TOSUM, TOMAR: TODO: HIGH. Write adapters to invoke the qual' visitors 
+
+Look at AnnotatMetrics.java:
+
+- Scan all Compilation Units from Workspace
+- core.ICompilationUnit -> core.dom.CompilationUnit (ASTNode)
+- Create a ASTNode Visitor 
+- call compUnit.accept(myvisitor);
+
+- Create a Visitor (see LocationVariableVisitor) that visits:
+-- field decl
+-- meth decl
+-- collect the things you need to visit; then call your qual visitors
+-- Or just call the qualutils to collect the information
+
+
+
+From NoAnnotMetrics:
+- Collection all the interesting stuff you want to analyze
+- Create a QualAnalyzer, passing it the stuff you collected
+
+
+
+In QualAnalyzer:
+- Create all the qual' visitors (that do not require annotations)
+- Have to tell each qual' visitor WHERE (the path) to write its file (which is under the project in the Eclipse child instance)
+- Have each qual' visitor visit the stuff you collected
+- Have each qual' visitor write its output inits own file (called qual'.txt)
+- 
+
+-----------------------------------------------------------------------------------------------------
+
+1. Optimize the code:
+-- DFEP too slow
+-- be sure we are counting only the right edges
+--- now we have: PT, DF, CF, and CR edges
+
+
+
+2. Correlation:
+- iteration 1: do it first in Excel/gnumeric
+-- between CS metrics (CSMs) and RS metrics (RSMs)
+-- compute Pearson coefficient
+- iteration 2: do it in R
+
+XXX. Add more CSMs to Java.
+XXX. Re-gen AllMetrics with more CSMs, for all systems.
+-- requires "src.code.xml" which has the CSMs
+XXX. Load CSV in R, and export table into CSV.
+XXX. Work in Excel.
+Then write a script to do the correlations.
+
+ 
+TOSUM: Cleanup names of methods to prepare for framework layering:
+- "appdefault" is very misleading
+- there is only the following:
+-- application types
+-- framework types:
+---  core fwk package
+--- default/standard package
+--- kit package
+-- library types
+
+TOSUM: Add ability to filter out some packages that are not in SRC folder. This will be useful for Android R packages.
+- store inclusion/exclusion in the config file.
+exclude java.*
+exclude R.* 
+
+
+
+TODO: Need to talk about CompT with the question if a general type can be used as composition by other types. 
+Then edges associated with composed type would be from enclosing type of the field to subtypes of the field type.
+This will certainly change 1FnE numbers for DL. Professor had some ideas.

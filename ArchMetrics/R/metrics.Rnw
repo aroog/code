@@ -1,0 +1,52 @@
+<<XXX,eval=TRUE,echo=FALSE,term=FALSE,fig=TRUE,include=FALSE>>=
+  
+
+  # returns an array of p values as returned by wilcox.test
+  runWilcox <- function(system, metric, path) {
+    
+    #Assume the CSV file is called System_Metric.csv
+    pattern = paste("R__", system, "_", metric, ".csv", sep="")
+    
+    Mj <- NULL
+    
+    pathname <- file.path(path, pattern) 
+    MjTable <- read.csv(pathname, sep=',', header=T)
+    
+    #summary stats
+    sumResult <- summary(MjTable$ClusterSize)
+    
+    testResult <- wilcox.test(MjTable$ClusterSize, alternative="greater")
+    # Add Max., Mean, in addition to p-value
+    Mj <- c(Mj, sumResult["Max."], sumResult["Mean"], testResult$p.value)
+    
+    #Cliff's delta calculations
+    #orddom(MjTable$Control,MjTable$ClusterSize,paired=FALSE,outputfile="results.txt")
+    return(Mj)
+  }
+
+runMetric <- function (metric, systems, csvPath) {
+  ret <- sapply(systems, runWilcox, metric, csvPath)
+  return (ret)
+}
+
+# Could have an extra level of indirection; map from name in table vs. name of files.
+# CDB -> CryptoDB
+# TODO: HIGH. Pass the system name to the pattern, to make sure we are reading the correct CSV file for the system
+systems <- c('MD', 'CDB', 'AFS', 'DL', 'PX')
+metricNames <-c('WAWB','WAWBR','WAB','WABR')
+wd <- getwd() 
+csvPath <- file.path(wd,"csv") 
+listresult <- sapply(metricNames, runMetric, systems, csvPath)
+result <- t(listresult) # transpose results
+
+<<regresults, echo=FALSE, term=TRUE, results=tex>>=
+  library(xtable)
+xtmp <- xtable(result)
+#Set the significant digits
+#Comment this out for now
+#TOAND: Add this back to control the number of digits
+#TOAND: Fix columns for table
+#digits(xtmp) <- c(0,10,10,10,10)
+print(xtmp, include.rownames = TRUE)
+@
+

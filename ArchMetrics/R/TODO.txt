@@ -1,0 +1,552 @@
+---------------------------
+TODO file for the R scripts
+
+
+-----------------------------------------------------------------------------------------------------
+Possible designs:
+
+
+Design1.
+- For each system Si, each metric Mj, output the Si_Mj.csv file into one folder
+- Load *.csv from that folder
+- Compute statical test Tk on each Si_Mj and output as Si_Mj.txt into folder as Si_Mj_Tk.txt
+- Or put multiple statistical tests into the same file for an Si_Mj.txt
+-- Figure out meta-data (rows/cols) for that file
+
+Design2.
+- For each system Si, metric Mj, dump the Si_Mj.csv file into one folder
+- For each metric Mj
+-- Load Si_Mj.csv from folder
+-- Compute statistical test Tk on each Si_Mj and
+-- Output results for metric M_j, across all systems, into one text file/LaTex table for test Tk
+    (with one row or one column per system)
+-- Table will be called Mj_Tk
+
+
+-----------------------------------------------------------------------------------------------------
+
+DONE. To deal with non-cluster metrics, create a separate script:
+- For each system Si, load the Si_All_Metrics.csv
+- Read.csv
+
+- Take a list of metrics Mi
+	%PulledObjects
+	(The name in the list of metrics must match the name of the column in AllMetrics)
+	(you may need to change the name that is included in the CSV file)
+- For each metric Mi, get metric across all systems:
+	Si$Mi (Mi must match the name of the colum in the CSV file)
+- Compute summary for metric across all systems
+    Avg, Min, Max, Std 
+- Display a table with all the metrics and all the systems
+	
+	System: 	S1	... Sn			Min		Max 	Avg.	Std. Dev 
+	Metric
+		M1		M11		M1n			M1min	M1max	M1avg	M1std				
+		...
+		Mn
+
+-----------------------------------------------------------------------------------------------------
+TONOTDO. Fix metrics.Rnw:
+Note: metrics.Rnw is invoked using the following R command from console:
+Sweave(file='metrics.Rnw')
+- No longer using Seave
+
+
+DONE. Add descriptive statistics in addition to p-value
+- Max, Median, p-value
+
+              |  MD   |               |    AFS
+WAB       Max|Median|p-value       |   Max|Median|p-value
+WAWB      Max|Median|p-value       |   Max|Median|p-value
+
+- Figure out how to use x-table to create this table with a script
+
+In the worst case, add additional columns:
+
+           MD_Max|MD_Median|MD_pvalue  |    AFS
+WAB       Max|Median|p-value       |   Max|Median|p-value
+WAWB      Max|Median|p-value       |   Max|Median|p-value
+
+If cannot make the table fit on one page, we could transpose the data:
+
+           WAB 	| WAWB	| ....
+MD
+WAB_Max    		|		|       |   
+WAB_Median 		|		|       |
+WAB_p-value    	|		|       |
+AFS    			|    	|
+WAB_Max    		|		|       |   
+WAB_Median	    |		|       |
+WAB_p-value    	|		|       |
+
+
+TONOTDO. Look at HMisc package. Could be more suitable than xtable:
+http://tex.stackexchange.com/questions/25575/how-can-i-use-a-table-generated-by-r-in-latex
+Has support for multicolumn
+
+DONE. Just generate tabular data (contents only).
+- We will generate the rest of the stuff manually
+-- Caption, label, headers, etc.
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: MED. Refactor the R scripts
+- Have separate function to just read the file
+- Separate function to compute stats
+
+TODO: MED. Place reusable functions in a library to avoid evil code duplication
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: From the perspective of R,
+Find out if it will mess things up to have some All_Metrics.csv file with fewer columns than others.
+If src.code.xml is missing for some systems, you don't add the code structure metrics to All_Metrics.csv.
+Will this be an issue?
+Look into this "autofill" option.
+
+NOTE: Should avoid "blank cells" in CSV files used for R.
+
+-----------------------------------------------------------------------------------------------------
+
+DONE. For LaTex output, include only a subset of the rows since the full table has over 100 rows!
+
+Use: final_table[, 1];
+To get all the row names.
+
+Create a vector metricNames in the script with the hard-coded names.
+
+We will manually edit this vector.
+In the generated table, include only the rows for metrics in the metricNames vector.
+
+-----------------------------------------------------------------------------------------------------
+
+DONE. Look at xtable package:
+- See if we can just generate the "tabular" part.
+- So we can set the caption, label, etc., in the paper
+
+-----------------------------------------------------------------------------------------------------
+
+DONE. How does R deal with special characters in column names?
+#, %, etc.
+
+table$"%PulledObjects"?
+
+-----------------------------------------------------------------------------------------------------
+
+DONE. When DescriptiveStatistics returns NaN,
+substitute with something TBD that will not throw off R.
+
+DONE. Figure out what TBD should be for R to still manage to compute Min, Max, etc.
+- figure out what is the correct blank cell equivalent for R
+- Modify the code that writes the value obtained from DescriptiveStatistics to do the substitution
+
+-----------------------------------------------------------------------------------------------------
+
+DONE. Copy Rnw file. No longer using Sweave.
+- Follow the same design for all the scripts.
+- Directly generate .tex file.
+
+-----------------------------------------------------------------------------------------------------
+
+TOMAR: TODO: MED. Define groups for metrics.
+- Use the groups to group and order the rows for the metrics in the table.
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: HIGH. Manually exclude trivial rows:
+- Min being always zero, or always 1, etc.
+- Select the appropriate subset in the metricNames vector
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: HIGH. XXX. Fix metric names.
+NOTE: R does not like column names that are not syntactically valid.
+R will replace an invalid name with a valid one, possibly prepending X:
+> make.names("1DnP_Cluster_Min")
+[1] "X1DnP_Cluster_Min"
+We have quite a few metric names that start with "1". Bad idea. 
+
+Make sure that all metric names are valid R identifiers.
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: HIGH. Create script for figures per system:
+(we may have multiple variants of this script, since we may need to generate different plots for each metric
+- Take a vector of metric names
+- Take a vector of plotting functions (hist, ...)
+- For each system Si, for each metric Mi, apply the plotting function, generate a plot
+- Export the plot as a picture in the PS/EPS format to a file called Si_Mi_Figi.eps
+(Generate "Figi" name from the name of the plotting function)
+- Place the exported plots in 'eps' sub-folder 
+
+Maybe have multiple variants:
+- For "plot", you need to pass x and y; not just one variable.
+
+Avoid hard-coding plot function name: take it from a list.
+Avoid hard-coding column name (Default is $ClusterSize)
+
+-----------------------------------------------------------------------------------------------------
+
+Look into GGplots2 library for plotting.
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: HIGH. Create script for figures, for one metric Mi, across all systems:
+- Read data from All_metrics.csv
+- Given a metric Mi, e.g., PTEP_F, plot Mi across all systems
+- e.g., Excel column chart, a.k.a., barplot in R:
+- x-axis will be 
+	
+		----------------------------
+		MD		AFS			PX
+
+- Avoid hard-coding plot function name: take it from a list.
+
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: HIGH. Create script for figures, for set of *related* metrics Mij,  across all systems:
+- Read data from All_metrics.csv
+- Do a boxplot 
+- Initially, do this with the WAW* metrics;
+- Generate an appropriate file name, based on the set of metrics.
+
+TOAND: TODO: HIGH. Can we generalize the design to take a set of a set of *related metrics*?
+- Each set will turn into a figure of a set of related metrics.
+- We will need multiple figures
+
+
+- E.g., in LNCS11, we construct a table like so, 
+				JHD	DL	MD	APD	PX	CDB
+#O OGraph		525	313	37	133	240	27
+#ABTTLO			18	15	12	11	46	7
+#O Flat Graph	61	59	46	214	129	36
+and plot it in a boxplot.  See Gnumeric.
+
+Sample R code: 
+#box plots
+rownames<-c("MD","Sys2","Sys3","Sys4","Sys5","Sys6","Sys7","sys8") #change this to take from a file of all systems
+legendnames<-c("CS","RS")
+legendcolors<-c("lightgreen","lightblue")
+legendtitle<-"Information source"
+
+#convert to a list of two vectors
+waiwblist<-list(METRIC$CS,METRIC$RS)
+
+title<-"Comparison between set sizes by information source for all systems (DTPO)"
+#change main
+boxplot(waiwblist, beside = TRUE, main = title, col = c("lightgreen","lightblue"),
+cex.axis=0.8, cex=0.5,xlab = "System", xaxt="n", ylab = "Set size", ylim = c(0, 20), xlim=c(1,16), boxwex=0.3,staplewex=0.6,space=0.05)
+
+axis(1, at=seq(1,16,by=2), labels=unique(rownames))
+
+legend(1, title=legendtitle,  x="topright",legendnames, cex=0.8,  fill=legendcolors);
+
+#return graphics settings as they were
+#par(opar)
+
+#make sure you put this at the end to avoid any rendering problems. It depends on the ps viewer on your machine rather than on R especially on #mac and linux.
+graphics.off()
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: MED. See if it possible to include many small boxplots into one big figure.
+- Can R do that?
+- Or do we have to do that manually when including the .eps files into the Latex files.
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: MED. Set better x-axis and y-axis labels on some of the metrics.
+- Instead of showing "csv_data[,col]"
+- Take the x-axis label and the y-axis label as inputs to the function
+- Pass them to the plotting function
+
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: Look into "null device" messages. Are they normal? Or do they indicate some trouble?
+- If there is a missing file, convert to meaningful error message
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: HIGH. Cleanup R scripts:
+- Delete uninteresting commented out code.
+- Delete obsolete scripts; or bring them up-to date
+(would be useful to have a simple script for smoke testing one system, one metric at a time)
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: HIGH. Look into why some plots do not have any X- or Y-axes set.
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: HIGH. Take another vector with the display name of the vectors:
+- Avoid displaying implementation-oriented metric name
+- Use the same pattern in figures (plots) and in the tables being generated
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: HIGH. Generate latex code for all the generated plots to include them into a beamer presentation: 
+- Create one .tex file:
+- Append to it the following text, with the placeholders: M_i, M_i__f_i filled in.
+
+\begin{frame}{<<M_i>>}
+
+\begin{figure}[!tb]
+\centering
+\includegraphics[width=0.8\textwidth, clip, trim = 0pt 0pt 0pt 0pt]{./../eps/M_i__f_i.eps}
+\caption{\label{fig:<<M_i__f_i>>}<<M_i>>}
+\end{figure}
+\end{frame}
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: Look into boxplot options:
+- Is it possible to have R label the outlier (with the system name)?
+
+TODO: MED. Is it possible to add labels for outliers in a boxplots so that we know for which 
+system(s) we have outliers? This will help while analyzing the results and writing the paper. 
+
+E.g., PTEP_F_MAX - the outlier is CDB  vs. PTIE_P where the outlier is DL
+
+Found this resouce: 
+http://r.789695.n4.nabble.com/Box-Plot-outliers-label-td895327.html
+
+-----------------------------------------------------------------------------------------------------
+
+DONE. For computing p-values, add more metrics: 
+- Add all metrics that deal with clusters.
+- Was just using 4 metrics: 'WAWB','WAWBR','WAB','WABR'.
+- Added: '1DnP', '1PnD', 'HMO', 'TMO', 'TOS'
+
+DONE. All metrics:
+- Order the rows in the table;
+- Order as: "Cluster metrics", "Object metrics", "Edge metrics"
+
+DONE. All metrics:
+- Add Mean/Avg. to Min, Max
+
+DONE. Cluster metrics:
+- Maybe get rid of median, always zero. Leave it for now.
+- Add mean
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: Can we combine the two tables into one?
+Table I has some metrics:  Max, Median, Mean, p-value.
+Table II has all metrics: Min, Max. Then added Median or Mean. Only missing p-value.
+
+Add p-value to Table II.
+Add Mean, if space allows.
+
+NO. Let's just keep all cluster metrics in Table I, with p-values.
+Table II will have only non-cluster metrics.
+
+IDEA. Split metrics into n-tables, one per category:
+Cluster metrics, Object metrics, Edge metrics.
+
+TOAND: What changes are needed to split the big table (Table II) into 2 or 3 tables.
+
+
+IDEA. Change Table I. 
+- Just have p and Cohen's d.
+- Since does not make sense to compute Min, Max, etc. for p-values.
+
+DONE. Add Cohen's d.
+
+
+-----------------------------------------------------------------------------------------------------
+
+TODO: HIGH. Detect outliers across systems, in the all_metrics table.
+- Can it be done in R?
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: MED. Add exception handling:
+- At least, print the name of the file containing bad data
+- Make it easier to debug when a CSV file has badly escaped special characters, like ", and ,
+
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: Can we format some columns better:
+e.g., percentage column (SO_F), show it as %
+
+TODO: Store in the metric_name.csv a formatting column
+
+TOAND: TODO: Read the formatting column from metric_name.csv
+- Format the column based on that 
+- Use the same format column to set the:
+-- Number of significant digits, e.g. "00" for 2 significant digits, "000" for 3, etc.
+-- Whether the column is percentage, "%%" or "PCT.", etc.
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: Add Cohen's d
+- For each metric, read the control value from metric_name.csv
+- Construct a vector of the right length (same length as MjTable$ClusterSize)
+- Pass the constructed version as first argument to orddom
+- Store the Cohen's d in the dataframe, together with p-value
+- Fix hack: do not use hard-coded control value of 0 or 1
+
+For Cohen's d, retrieve:
+
+["Cohen’s d", col#]
+["d CI low", col#]
+["d CI high", col#]
+
+
+TOAND: TODO: Add Cliff's delta
+(See orddom package)
+
+For Cliff's delta, retrieve:
+["delta", col#]
+
+
+-----------------------------------------------------------------------------------------------------
+
+TOMAR: Do metric renames:
+- DONE. PTIE -> InhE
+
+TOMAR: Add any new metrics:
+- DONE. HMN (bad name)
+
+Re-order:
+- WA, WAWB, WAB
+- InhD, InhE, after SO
+
+-----------------------------------------------------------------------------------------------------
+N+1 iteration:
+(If the current take away message is not big enough for an LPU)
+(Add correlation between some CS metrics and RS metrics)
+
+
+TOAND: Load up the code structure metrics across all systems:
+- Put them all in one table
+- Or add them as columsn to the all_metrics existing table (to make it easier to line up the rows)
+NOTE: Right now, the code structure metrics are added to the same AllMetrics file, so they will show up 
+as additional columns. The CSMs can be copied to a separate table, or kept in the same table, 
+to make it simpler to correlate them with other metrics in other rows.
+NOTE: Must turn on option to generate CSMs.
+NOTE:  
+
+
+-----------------------------------------------------------------------------------------------------
+
+DONE. For each "cluster metric", on which we are computing Cohen's d, add control value.
+- Add rationale to AllMetrics.xls
+- Update metric_name.csv with the same value.
+-- Right now, the file has some hard-coded bogus number (1)
+- Discuss this in the paper (under Ranges)
+- TOMAR: Re-run scripts, update Table I
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: HIGH. In table all_metrics:
+- Load the control value from metric_name.csv
+- Add it as a first column
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: TODO: HIGH. Format the numbers  automatically:
+- In table cluster_metrics
+-- Use bold for p values < 0.05
+- Highlight D values with some text:
+
+For D, we are using the following ranges:
+
+[0, 0.147) - \textit{(n)} negligible effect size
+[0.147, 0.333) - \textit{(s)} small
+[0.333, 0.474) - \textit{(m)} medium
+[0.474, 1] - \textit{(l)} large
+
+TOAND: Change formatting.
+- (n) (s), ... taking up too much space.
+- Instead, use \textit{number} if medium or large, i.e., if > 0.333
+
+
+ NOTE: If R does not have support for this, may need to:
+ - Convert numbers to text
+ - add markup to the text: \textbf{} for bold
+
+NOTE2: Discussion of effect size makes sense only when p-value <.05.
+TODO: LOW: If possible, do not add the effect size labels (n), (s), (m), (l) when p-value>=0.05
+(see APD, 1DnP and 1PnD for testing )
+
+NOTE3: since the intervals use 3 significant digits it would make sense
+to have 3 digits in the table for Cliff's Detla D as well.
+If the text becomes unreadable - keep 2 digits.
+
+-----------------------------------------------------------------------------------------------------
+
+TOAND: Create a separate table for list of systems: all_systems.text.
+Retrieved from All_Metrics.csv.
+Include the following columns.
+
+System
+All_AllTypes
+All_InstantiatiableTypes
+All_AbstractClasses
+All_Interfaces
+All_NumObjects
+All_NumEdges
+All_NumPtEdges
+		
+-----------------------------------------------------------------------------------------------------
+		
+TODO: No longer hard-code the number of digits:
+- Make it column specific.
+- OR at least: table-specific
+
+-----------------------------------------------------------------------------------------------------
+TOAND: Take out "Sample Quantiles", "Theoretical Quantiles".
+
+
+TOAND: Increase fontsize used in the plots:
+- x- and y-axis labels, outliers, etc.
+- Since we are shrinking EPS files by showing 4 in a row
+
+-----------------------------------------------------------------------------------------------------
+		
+TOAND: HIGH. Write R scripts to generate in R the Excel charts that were manually generated by Radu:
+- _all_EdgePrecision.xls
+- _all_ScatteringObjects.xls
+(Requires short output for SO_F, PTEP_F)
+
+
+-----------------------------------------------------------------------------------------------------
+		
+TODO: Convert following metrics to percentages, so we can use fewer significant digits in the whole table
+- SOF
+- PTEP_F 
+
+-----------------------------------------------------------------------------------------------------
+
+XXX. Can we come up with number of digits to use per metric?
+- Load this from the csv file metric_name.csv
+- Just add number of digits column, instead of the more general "Format" column.
+
+TODO: HIGH. Also, add multiplier column (by default 1); this way, we can convert to percentages
+-- Instead of inferring that from the Format column
+
+In test_all_metrics.R
+
+SO_F_Median, 
+SO_F_Max
+PTEP_F_Median
+PTEP_F_Max
+
+-----------------------------------------------------------------------------------------------------
+TODO: HIGH. Develop R scripts to compute the correlations;
+(NOTE: for LNCS,  we used gnumeric for correlations, not R) 
+
+Correlation script:
+Inputs:
+Rows: list of code structure metrics;
+Cols: list of runtime structure metrics
+Output:
+Compute the entire matrix.
+
+Optional input: thresthholds?
+
+-----------------------------------------------------------------------------------------------------
+

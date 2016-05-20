@@ -1,0 +1,17 @@
+del *.aux
+del *.tmp
+del *.tex.bak
+del *.tex.sav
+del *.prj.bak
+del *.txt.bak
+del *.bib.bak
+del *.bbl
+del *.blg
+del *.log
+del *.dvi
+del *.ps
+del *.lof
+del *.lot
+del *.toc
+del *.brf
+del *.out

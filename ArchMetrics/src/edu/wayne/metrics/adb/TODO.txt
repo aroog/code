@@ -1,0 +1,70 @@
+TODO: HIGH. Use reflection to make the generation and output of triplets automatic.
+- To avoid having to call each one, one by one.
+
+TODO: LOW. Have each metric save its header
+
+
+TODO: EdgePrecision:
+-- Count fields only?
+-- Count local variables too?
+TODO: FIX When adding an edge (edgeInfo) we do not consider the Domain parameters of the field declaration. 
+This may lead to unwanted merging of field declaration
+
+
+DF Edge Metrics
+- Added DFEdgePrecision
+- Updated ReverseTracebility
+
+
+
+TODO: Add JavaDoc on each class you create
+
+TODO: Refactor the code. Use the custom style (120 character line width)
+
+DONE: Fix typos in spelling of "field". Eclipse has a spell-checker. Use it!
+
+TODO: Refactor DFEdgePrecision:
+- split long method into smaller methods: one for method parameters, one for receivers, etc.
+										or one per type of expression
+
+"t.f" is a field write
+t is the receiver of the field write
+t can be a local variable.
+
+
+DONE: Incorporate Radu's fix for generic type substitution
+
+DONE: Check-in qual classification
+
+TODO: Update/revise presentation with the additional metric
+
+
+
+-----------------------------------------------------------------------------------------------------
+
+HIGH. Make the output clear to understand:
+- show expression
+*- show field, method qualified by the declaring class (which could be a superclass)
+
+Second iteration:
+- obtain data from code structure about the field, method
+-- compute simple ones using visitors
+-- look up metrics associated with a method using metrics tool:
+
+lookup(m) -> set of metrics, e.g., CCM
+
+How to classify the data from the DF metrics:
+- For each method, field, etc.
+-- add a column:
+-- isInherited
+-- for methods: visibility: public, protected
+				isoverridden
+				method formal params
+				method actual args
+-- for fields: visibility, isgeneral, etc.
+
+Classification would be:
+- fields that are general
+- receiver that are general type
+
+-----------------------------------------------------------------------------------------------------

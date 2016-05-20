@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.ui.actionSets">
+		<actionSet
+			label="Sample Action Set"
+			visible="true"
+			id="ArchMetrics.actionSet">
+			<menu
+         id="ArchMetrics.menu"
+         label="&amp;ArchMetrics">
+				<separator
+				  	name="ArchMetrics.group">
+				</separator>
+			</menu>
+     <action
+         class="edu.wayne.metrics.actions.AnnotatMetrics"
+         id="edu.wayne.defaulting.actions.ArchMetrics"
+         label="ArchMetrics"
+         menubarPath="ArchMetrics.menu/ArchMetrics.group"
+         style="push"
+         toolbarPath="ArchMetrics.menu/ArchMetrics.group">
+   </action>  
+     <action
+         class="edu.wayne.metrics.actions.NoAnnotatMetrics"
+         id="edu.wayne.defaulting.actions.NoArchMetrics"
+         label="NoAnnotatMetrics"
+         menubarPath="ArchMetrics.menu/ArchMetrics.group"
+         style="push"
+         toolbarPath="ArchMetrics.menu/ArchMetrics.group">
+   </action>
+   <action
+         class="edu.wayne.metrics.actions.OOGMetrics"
+         id="edu.wayne.defaulting.actions.OOGMetrics"
+         label="OOGMetrics"
+         menubarPath="ArchMetrics.menu/ArchMetrics.group"
+         style="push"
+         toolbarPath="ArchMetrics.menu/ArchMetrics.group">
+   </action>
+   <action
+         class="edu.wayne.metrics.actions.GenerateDefaultMap"
+         id="edu.wayne.metrics.actions.GenerateDefaultMap"
+         label="MapForMetrics"
+         menubarPath="ArchMetrics.menu/ArchMetrics.group"
+         style="push"
+         toolbarPath="ArchMetrics.menu/ArchMetrics.group">
+   </action>  
+   
+		</actionSet>
+	</extension>
+   
+</plugin>
