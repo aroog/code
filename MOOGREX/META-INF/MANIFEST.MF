@@ -16,7 +16,9 @@ Require-Bundle: org.eclipse.jdt,
  org.eclipse.jdt.ui,
  edu.cmu.cs.crystal,
  SecOOG,
- MOOG
+ MOOG,
+ OOGRE,
+ PointsTo
 Bundle-Activator: moogrex.plugin.Activator
 Export-Package: moogrex.analysis,
  moogrex.plugin
