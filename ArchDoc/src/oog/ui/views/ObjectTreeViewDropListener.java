@@ -28,7 +28,7 @@ import edu.wayne.ograph.OObject;
 public class ObjectTreeViewDropListener extends ViewerDropAdapter {
 
 	private static final String OWNED = "owned";
-	private static final String PARAM = "PARAM";
+	private static final String OWNER = "owner";
 	private static final String PD = "PD";
 	
 	private final TreeViewer viewer;
@@ -99,8 +99,8 @@ public class ObjectTreeViewDropListener extends ViewerDropAdapter {
 			ODomain tgtDomain = (ODomain) target;
 			String domainName = tgtDomain.getD();
 			
-			if(domainName.equals(PARAM))
-				return false;
+			if(domainName.equals(OWNER))
+				domainName = OWNER;
 			else if (domainName.equals(OWNED))
 				domainName = OWNED;
 			else
@@ -129,7 +129,7 @@ public class ObjectTreeViewDropListener extends ViewerDropAdapter {
 			{
 				ref = new PushIntoOwned(srcObject, getParent(tgtDomain), domainName);
 			}
-			else if(domainName.equals(PARAM))
+			else if(domainName.equals(OWNER))
 			{
 				ref = new PushIntoParam(srcObject, getParent(tgtDomain), domainName);
 			}

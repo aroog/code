@@ -16,7 +16,7 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
-
+// TODO: All these fonts/colors gotta be disposed. 
 public class ArchitecturalLabelDecoratorBase implements IColorProvider, IFontProvider {
 
 	private static FontRegistry fontCache = new FontRegistry();
@@ -142,6 +142,7 @@ public class ArchitecturalLabelDecoratorBase implements IColorProvider, IFontPro
 	public void removeListener(ILabelProviderListener listener) {
 	}
 
+	// TODO: Don't see the point of coloring domains...
 	public Color getForeground(Object element) {
 		Color color = null;
 
@@ -151,7 +152,7 @@ public class ArchitecturalLabelDecoratorBase implements IColorProvider, IFontPro
 				color = colorCache.get("PrivateDomainColor");
 			}
 			// XXX. Extract constants
-			else if (displayDomain.getD().equals("PARAM")) {
+			else if (displayDomain.getD().equals("owner")) {
 				color = colorCache.get("ParamDomainColor");
 			}
 			else
@@ -182,8 +183,6 @@ public class ArchitecturalLabelDecoratorBase implements IColorProvider, IFontPro
 			if(displayObject.isMainObject()){
 				font = fontCache.get("Bold");
 			}
-			
-		
 		}
 
 		return font;

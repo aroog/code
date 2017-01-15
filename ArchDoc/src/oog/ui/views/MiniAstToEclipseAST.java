@@ -84,15 +84,25 @@ public class MiniAstToEclipseAST {
 			String kind = "";
 			String encMthdSig = "";
 			
+			// XXX. for local variables this condition holds
+			// The name is not set so it is empty
+			// Then later on cannot 
 			if (enclDecl instanceof MethodDeclaration) {
 				MethodDeclaration methDecl = (MethodDeclaration) enclDecl;
 				typeDecl = methDecl.enclosingType;
 				
-    			encMthdSig = getSignature(methDecl);
+    			//encMthdSig = getSignature(methDecl);
+    			encMthdSig = methDecl.methodName;
 				
 				// XXX. How to figure out the name?
 				// XXX. How to figure out the kind? could be V or R
 				kind = AnnotateUnitEnum.v.toString();
+				
+				// TODO: Set:
+				// type = (already set)
+				// name = XXX.
+				// Worst case: can iterate through locals...
+				// No need to do it here. OOGRE iterates over the TM variables.
 			}
 			else if (enclDecl instanceof FieldDeclaration) {
 				FieldDeclaration fieldDecl = (FieldDeclaration) enclDecl;
@@ -113,7 +123,11 @@ public class MiniAstToEclipseAST {
 				if(enclosingDeclaration instanceof MethodDeclaration ) {
 					typeDecl = ((MethodDeclaration)enclosingDeclaration).enclosingType;
 					MethodDeclaration mthdDecl = (MethodDeclaration)enclosingDeclaration;
-					encMthdSig = getSignature(mthdDecl);
+					//encMthdSig = getSignature(mthdDecl);
+					encMthdSig = mthdDecl.methodName;
+					name = varDecl.varName;
+					type = varDecl.varType;
+					int i =0;
 				}
 				if(enclosingDeclaration instanceof FieldDeclaration ) {
 					FieldDeclaration fieldDecl = (FieldDeclaration)enclosingDeclaration;

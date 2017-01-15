@@ -9,9 +9,11 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.ui.dialogs.FilteredTree;
 
+// TODO: Rename: Architectural -> Object
 public class ArchitecturalDecoratingLabelProvider extends DecoratingLabelProvider implements IColorProvider, IFontProvider {
+	
 	public ArchitecturalDecoratingLabelProvider(FilteredTree filterTree) {
-		super(new LabelProviderObjectGraph(filterTree), new ArchitecturalLabelDecorator());
+		super(new LabelProviderObjectGraph(filterTree), new LabelDecoratorObjectGraph());
 	}
 
 	public void dispose() {

@@ -121,7 +121,7 @@ public class ObjectTreeView extends ViewPart implements Refreshable {
 
 	private Menu headerMenu;
 
-    private Refinement selectedRef;
+    private oog.re.IOperation selectedRef;
 
 	private IObject parentObject;
 
@@ -231,8 +231,8 @@ public class ObjectTreeView extends ViewPart implements Refreshable {
 		    public void doubleClick(DoubleClickEvent event) {
 		        IStructuredSelection selection = (IStructuredSelection)event.getSelection();
 		        Object firstElement = selection.getFirstElement();
-		        if (firstElement instanceof Refinement) {
-		        	selectedRef = (Refinement) firstElement;
+		        if (firstElement instanceof oog.re.IOperation) {
+		        	selectedRef = (oog.re.IOperation) firstElement;
 
 		        	// XXX. What about if RefinementUnsupported?
 		        	if(selectedRef.getState() == RefinementState.MoreInfoNeeded ) {
@@ -274,6 +274,30 @@ public class ObjectTreeView extends ViewPart implements Refreshable {
 	private void createMenu(Table table) {
 		headerMenu = new Menu(table);
 		table.setMenu(headerMenu);
+		
+		//  TODO: Convert Auto to toggle?
+		final MenuItem enableAuto = new MenuItem(headerMenu, SWT.NORMAL);
+		enableAuto.setText("Enable Auto");
+		enableAuto.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				// Get the refinement model once
+				OGraphFacade facade = oog.ui.Activator.getDefault().getMotherFacade();
+				facade.setAuto(true);
+			}
+		});
+		
+		final MenuItem disableAuto = new MenuItem(headerMenu, SWT.NORMAL);
+		disableAuto.setText("Disable Auto");
+		disableAuto.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				// Get the refinement model once
+				OGraphFacade facade = oog.ui.Activator.getDefault().getMotherFacade();
+				facade.setAuto(false);
+			}
+		});
+		
+		
+		final MenuItem sep1 = new MenuItem(headerMenu, SWT.SEPARATOR);
 		
 		final MenuItem resetStatus = new MenuItem(headerMenu, SWT.NORMAL);
 		resetStatus.setText("Reset status");
@@ -487,7 +511,7 @@ public class ObjectTreeView extends ViewPart implements Refreshable {
 					{
 						ODomain domain = (ODomain) obj;
 						String domainName = domain.getD();
-						boolean enabled = (!(domainName.equals("PARAM") || domainName.equals("owned") || domainName.equals("DLENT") || domainName.equals("SHARED") || domainName.equals("DUNIQUE")));
+						boolean enabled = (!(domainName.equals("owner") || domainName.equals("owned") || domainName.equals("DLENT") || domainName.equals("SHARED") || domainName.equals("DUNIQUE")));
 						RenameDomainAction action = new RenameDomainAction(viewer, refinementViewer, domain);
 						manager.add(action);
 						action.setEnabled(enabled);

@@ -69,7 +69,7 @@ public class ContentProviderObjectGraph implements ITreeContentProvider, Observe
 		}else if(parentElement instanceof IObject){
 			IObject treeElement = (IObject) parentElement;
 			
-			createDomain(treeElement, "PARAM");
+			createDomain(treeElement, "owner");
 			
 			ArrayList<Object> o = new ArrayList<Object>();
 			o.addAll(treeElement.getChildren());
@@ -90,7 +90,8 @@ public class ContentProviderObjectGraph implements ITreeContentProvider, Observe
 	}
 
 	/**
-	 * Use to create a placeholder domain (called "PARAM") to add to the object's sub-tree, to support drag-and-drop into a PARAM
+	 * Use to create a placeholder domain to add to the object's sub-tree, to support drag-and-drop 
+	 * into owner or p
 	 * 
 	 * @param param XXX. Move this static method to a Utils class.
 	 * 
@@ -154,7 +155,11 @@ public class ContentProviderObjectGraph implements ITreeContentProvider, Observe
 		boolean hasChildren = false;
 		if (element instanceof IObject) {
 			IObject treeElement = (IObject) element;
-			hasChildren = treeElement.hasChildren();
+			// treeElement.hasChildren() returns false if the object has no domains
+			// Library classes will not declare domains. 
+			// But we still want to show the list of expressions, etc.
+			// hasChildren = treeElement.hasChildren();
+			hasChildren = true;
 		}else if(element instanceof IDomain){
 			IDomain treeElement = (IDomain) element;
 			hasChildren = treeElement.hasChildren();
