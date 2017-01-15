@@ -20,17 +20,17 @@ List of key projects:
 * ArchMetrics: compute metrics based on an abstract object graph
 * ArchSummary: impact analysis based on a hierarchical object graph
 * OOGRE: Object Graph REfinement (OOGRE)
+* OOGRE2: version 2.0: supports Auto and Assisted mode.
 
 Utility/Helper projects:
 * Simple.XML: Eclipse-based wrapper for simple.xml framework
 * MiniAstOOG: Simple Abstract Syntax Tree (AST) representation
 * ArchTrace:
 * ArchLib:
-* ArchViewer: nested box visualization for OOGs using GraphViz DOT
-* ArchViewerWeb (Lite): nested box visualization for OOGs using GraphViz DOT
+* ArchViewer: nested box visualization for OOGs using GraphViz DOT; uses ZGRViewer;
+* ArchViewerWeb (Lite): nested box visualization for OOGs using GraphViz DOT; optimized for the web; uses Scalable Vector Graphics (SVG);
 * MOOG: mother OOG facade to share the same OOG across tool stack
 * MOOGREX: integrate refinement and extraction
-
 
 
 List of contributors:
@@ -38,15 +38,15 @@ List of contributors:
 
 * Marwan Abi-Antoun
 * Radu Vanciu: PointsToOOG, SecOOG, MiniAstOOG, ArchMetrics
-* Ebrahim Khalaj: OOGRE
+* Ebrahim Khalaj: OOGRE, OOGRE2
 * Andrew Giang: ArchDoc, MiniAstOOG, ArchTrace, ArchSummary, ArchMetrics
 * Ahmad Moghimi: OOGWeb, OOGEclipsePlugin
 * Yibin Wang: logging functionality in ArchSummary
 * Sumukhi Chandrashekar: some contributions to ArchMetrics
 
 
-
 Credits:
 --------
 * GraphViz DOT
 * ZGRViewer
+
