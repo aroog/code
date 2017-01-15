@@ -3,14 +3,17 @@ package moogrex.analysis;
 import java.util.HashSet;
 import java.util.Set;
 
+import moogrex.plugin.Activator;
+import oog.common.OGraphFacade;
+import oogre.analysis.RefinementAnalysis;
+
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import edu.cmu.cs.crystal.AbstractCompilationUnitAnalysis;
 import edu.cmu.cs.crystal.IAnalysisInput;
 import edu.cmu.cs.crystal.IAnalysisReporter;
-import moogrex.plugin.Activator;
-import oog.common.OGraphFacade;
+import edu.wayne.pointsto.PointsToAnalysis;
 
 public class MotherAnalysis extends AbstractCompilationUnitAnalysis {
 
@@ -42,14 +45,16 @@ public class MotherAnalysis extends AbstractCompilationUnitAnalysis {
 		runOOGRE.setCompilationUnits(compUnits);
 		runOOGRE.setInput(savedInput);
 		runOOGRE.setReporter(savedReporter);
-		runOOGRE.run("OOGRE");
+		runOOGRE.run(RefinementAnalysis.CRYSTAL_NAME);
 		
 		// Extract OOG
-		RunChildAnalysis extractOOG = new RunChildAnalysis();
-		extractOOG.setCompilationUnits(compUnits);
-		extractOOG.setInput(savedInput);
-		extractOOG.setReporter(savedReporter);
-		extractOOG.run("PointsTo");
+		if(facade.isInferenceSuccess()) {
+			RunChildAnalysis extractOOG = new RunChildAnalysis();
+			extractOOG.setCompilationUnits(compUnits);
+			extractOOG.setInput(savedInput);
+			extractOOG.setReporter(savedReporter);
+			extractOOG.run(PointsToAnalysis.CRYSTAL_NAME);
+		}
     }
 
 	@Override

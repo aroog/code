@@ -40,11 +40,16 @@ public class MotherFacade implements OGraphFacade {
 
 	private boolean isExtractionSuccess = true;
 	
+	/**
+	 * true means the analysis finds a valid typing
+	 */
 	private boolean isInferenceSuccess = true;
 	
 	private RefinementModel model;
 	
 	private HeuristicsModel heuristicsModel;
+
+	private boolean isAutoMode;
 
 	/**
 	 * Private constructor to enforce singleton
@@ -150,11 +155,19 @@ public class MotherFacade implements OGraphFacade {
 	    isExtractionSuccess = status;
     }
 
+	/**
+	 * true means the analysis finds a valid typing
+	 * false means the analysis could not find a valid typing
+	 */
 	@Override
     public boolean isInferenceSuccess() {
 	    return isInferenceSuccess;
     }
 
+	/**
+	 * true means the analysis finds a valid typing
+	 * false means the analysis could not find a valid typing
+	 */
 	@Override
     public void setInferenceSuccess(boolean status) {
 		isInferenceSuccess = status;
@@ -168,6 +181,16 @@ public class MotherFacade implements OGraphFacade {
 	@Override
     public void setGraphState(OGraphState state) {
 		graphState = state;
+    }
+
+	@Override
+    public boolean isAuto() {
+	    return isAutoMode;
+    }
+	
+	@Override
+    public void setAuto(boolean auto) {
+		isAutoMode = auto;
     }
 	
 //	public static void setInstance(OGraphFacade service) {

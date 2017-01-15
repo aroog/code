@@ -71,6 +71,10 @@ public interface OGraphFacade {
 	boolean isInferenceSuccess();
 	
 	void setInferenceSuccess(boolean status);
+
+	boolean isAuto();
+	
+	void setAuto(boolean auto);
 	
 }
 

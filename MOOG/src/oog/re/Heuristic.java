@@ -1,6 +1,7 @@
 package oog.re;
 
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Transient;
 
 /**
  * Base class for the heuristics; used for persistence
@@ -23,6 +24,11 @@ public class Heuristic implements oog.re.IHeuristic {
 	@Attribute(required = false, name = "refID")
 	protected String refID;
 
+	// TODO: Pull up into base class
+	@Transient
+	// XXX. Do we not want to persist this?!
+	protected RankedTypings rankedTypings = new RankedTypings();
+	
 	/**
 	 * Use this constructor when reviving objects from persistence
 	 * @param srcObj
@@ -82,7 +88,7 @@ public class Heuristic implements oog.re.IHeuristic {
 
 	@Override
     public RankedTypings getRankedTypings() {
-	    return null;
+	    return rankedTypings;
     }
 
 

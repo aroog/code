@@ -1,5 +1,15 @@
 package moogrex.testing;
 
+import oog.common.MotherFacade;
+import oog.common.OGraphFacade;
+import oog.itf.IObject;
+import oog.re.PushIntoOwned;
+import oog.re.PushIntoPD;
+import oog.re.PushIntoParam;
+import oog.re.Refinement;
+import oog.re.RefinementModel;
+import oog.re.SplitUp;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -14,14 +24,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
 import edu.wayne.ograph.OGraph;
-import oog.common.OGraphFacade;
-import oog.itf.IObject;
-import oog.re.PushIntoOwned;
-import oog.re.PushIntoPD;
-import oog.re.PushIntoParam;
-import oog.re.Refinement;
-import oog.re.RefinementModel;
-import oog.re.SplitUp;
 
 public class BatchSetup {
 
@@ -124,7 +126,8 @@ public class BatchSetup {
 		else if (refType.equals("PushIntoPD") && dstDomain.equals("PD")) {
 			ref = new PushIntoPD(srcObject, dstObject, dstDomain);
 		}
-		else if (refType.equals("PushIntoParam") &&  dstDomain.equals("PARAM")) {
+		// HACK: Update this when renaming class
+		else if (refType.equals("PushIntoParam") &&  dstDomain.equals("owner")) {
 			ref = new PushIntoParam(srcObject, dstObject, dstDomain);
 		}
 		else if (refType.equals("SplitUp") ){
