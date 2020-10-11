@@ -302,6 +302,10 @@ public class RuntimeReport {
 		// For arrays ...
 		dID = dID.replaceAll("\\[", "_");
 		dID = dID.replaceAll("\\]", "_");
+		// For spaces
+		dID = dID.replaceAll("\\s+", "_");
+		// No commas for containers that take two generic types
+		dID = dID.replaceAll("\\,", "_");
 
 	    return dID;
     }	
