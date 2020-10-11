@@ -99,10 +99,12 @@ public class SingletonFacade implements Facade {
 
 	@Override
 	public IDomain getPrivateDomain(IObject obj) {
+		// TODO: Extract common method.
 		IDomain domain = null;
 		for (IDomain dom : obj.getChildren()) {
 			if(dom.getD().equals("owned")){
 				domain = dom;
+				break;
 			}
 		}
 		return domain;

@@ -130,7 +130,7 @@ public class TM {
 	}
 	
 	public Set<OType> getReadOnlyTypeMapping(Variable variable) {
-		Set<OType> qualifiersSet = new HashSet<OType>(typeMapping.get(variable));
+		Set<OType> qualifiersSet = new SetOType<OType>(typeMapping.get(variable));
 		return Collections.unmodifiableSet(qualifiersSet);
 	}
 	
@@ -210,13 +210,17 @@ public class TM {
 			// NOTE: not copying temporaries. Is this OK?
 			Variable var = entry.getKey();
 			Set<OType> setOTypes = entry.getValue();
-			Set<OType> copiedTypings = new HashSet<OType>();
+			Set<OType> copiedTypings = new SetOType<OType>();
 			if(setOTypes != null ) {
 				// XXX. Here, getting oType == null
 				for (OType oType : setOTypes) {
 					OType copiedOType = new OType(oType.getOwner(), oType.getAlpha(), oType.getInner());
 					copiedTypings.add(copiedOType);
 				}
+				// DEBUG:
+				// if(((SetOType)setOTypes).getVar()!=null){
+				// ((SetOType)copiedTypings).setVar(((SetOType)setOTypes).getVar());
+				// }
 			}
 			copiedTM.putTypeMapping(var, copiedTypings);
 		}
@@ -279,6 +283,10 @@ public class TM {
 	    return typeMapping.keySet();
     }
 
+	public boolean containsKey(Variable var) {
+	    return typeMapping.containsKey(var);
+    }
+	
 	// This is read-only
 	/**
 	 * @deprecated Should avoid using this directly. 
@@ -418,7 +426,7 @@ public class TM {
     }
 
     public Set<OType> initTypeMapping(boolean isMain, Variable variable, boolean isLent, boolean isUnique) {
-    	Set<OType> typeSet = new HashSet<OType>();
+    	Set<OType> typeSet = new SetOType<OType>();
     	OType fdOType = null;
 
     	ITypeBinding typeName = variable.resolveType();
@@ -1112,7 +1120,7 @@ public class TM {
      * @return
      */
 	public Set<OType> initParametrizedTypeMapping(String owningDomain, boolean isMain) {
-		Set<OType> typeMapping = new HashSet<OType>();
+		Set<OType> typeMapping = new SetOType<OType>();
 		OType oType = null;
 		if(isMain){
 			oType = new OType(owningDomain, "this.owned", "this.owned");
@@ -1172,7 +1180,7 @@ public class TM {
 	}
 	
 	public Set<OType> initRespectTypeMapping(String owningDomain, boolean isMain) {
-		Set<OType> typeMapping = new HashSet<OType>();
+		Set<OType> typeMapping = new SetOType<OType>();
 		OType oType = null;
 		if(isMain){
 			oType = new OType(owningDomain, "this.owned");
@@ -1202,7 +1210,7 @@ public class TM {
 	 * @return
 	 */
 	public Set<OType> initThisVariable() {
-		Set<OType> thisVarSet = new HashSet<OType>();
+		Set<OType> thisVarSet = new SetOType<OType>();
 		OType ownerP = new OType("owner","p");
 		thisVarSet.add(ownerP);
 		ownerP = new OType("this.owned","p");

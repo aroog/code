@@ -8,11 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 import oog.itf.IObject;
-import oog.re.IOperation;
 import oogre.refinements.tac.BaseOperation;
-import oogre.refinements.tac.Heuristic;
 import oogre.refinements.tac.OType;
-import oogre.refinements.tac.Refinement;
+import oogre.refinements.tac.SetOType;
 import oogre.refinements.tac.TypePair;
 
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -26,10 +24,7 @@ import org.eclipse.jdt.core.dom.IVariableBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import edu.cmu.cs.crystal.tac.model.SourceVariable;
-import edu.cmu.cs.crystal.tac.model.TACInstruction;
 import edu.cmu.cs.crystal.tac.model.TempVariable;
 import edu.cmu.cs.crystal.tac.model.Variable;
 
@@ -414,7 +409,7 @@ public class OOGContext {
 		typing.append(receiver);
 		typing.append(".");
 		typing.append("PD");
-		Set<OType> newTypingSet = new HashSet<OType>();
+		Set<OType> newTypingSet = new SetOType<OType>();
 		newTypingSet.addAll(typingSet);
 		for (OType oType : typingSet) {
 			if(oType.getOwner().contains("PD") && oType.getAlpha().contains("PD")){

@@ -199,19 +199,19 @@ public class ConflictResolution {
 		RankingStrategy ranking = RankingStrategy.getInstance();
 		List<TM> permutationTMs = new ArrayList<TM>();
 		Set<OType> leftHandSideVarSet = newTM.getAnalysisResult(leftHandSideVar);
-		Set<OType> copyLeftHandSideVarSet = new HashSet<OType>(leftHandSideVarSet);
-		Set<OType> copymethodVarSet = new HashSet<OType>(methodAUTypings);
+		Set<OType> copyLeftHandSideVarSet = new SetOType<OType>(leftHandSideVarSet);
+		Set<OType> copymethodVarSet = new SetOType<OType>(methodAUTypings);
 
 		// XXX: loop variable not being used?
 		for (OType lhsVarQualifier : leftHandSideVarSet) {
 			OType lhsVarHighest = ranking.pickFromSet(copyLeftHandSideVarSet, null);
-			Set<OType> newLhsVarSet = new HashSet<OType>();
+			Set<OType> newLhsVarSet = new SetOType<OType>();
 			newLhsVarSet.add(lhsVarHighest);
 			copyLeftHandSideVarSet.remove(lhsVarHighest);
 			copymethodVarSet.addAll(methodAUTypings);
 			for (OType thirdVarQualifier : methodAUTypings) {
 				OType thirdVarHighest = ranking.pickFromSet(copymethodVarSet, null);
-				Set<OType> newThirdVarSet = new HashSet<OType>();
+				Set<OType> newThirdVarSet = new SetOType<OType>();
 				newThirdVarSet.add(thirdVarHighest);
 				copymethodVarSet.remove(thirdVarHighest);
 
@@ -243,9 +243,9 @@ public class ConflictResolution {
 		List<TM> permutationTMs = new ArrayList<TM>();
 		
 		Set<OType> leftHandSideVarSet = newTM.getAnalysisResult(leftHandSideVar);
-		Set<OType> copyLeftHandSideVarSet = new HashSet<OType>(leftHandSideVarSet);
+		Set<OType> copyLeftHandSideVarSet = new SetOType<OType>(leftHandSideVarSet);
 		
-		Set<OType> copyMethodVarSet = new HashSet<OType>();
+		Set<OType> copyMethodVarSet = new SetOType<OType>();
 		
 		List<Set<OType>> listArgVarSets = new ArrayList<Set<OType>>();
 		for (Variable argVar : argOperands) {
@@ -254,11 +254,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListArgVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> argSet : listArgVarSets) {
-			Set<OType> copyArgVarSet = new HashSet<OType>(argSet);
+			Set<OType> copyArgVarSet = new SetOType<OType>(argSet);
 			List<Set<OType>> argVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : argSet) {
 				OType argVarHighest = ranking.pickFromSet(copyArgVarSet, null);
-				Set<OType> newArgVarSet = new HashSet<OType>();
+				Set<OType> newArgVarSet = new SetOType<OType>();
 				newArgVarSet.add(argVarHighest);
 				copyArgVarSet.remove(argVarHighest);
 				argVarPermutation.add(newArgVarSet);
@@ -267,11 +267,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListParVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> parSet : methodParsListTyping) {
-			Set<OType> copyParVarSet = new HashSet<OType>(parSet);
+			Set<OType> copyParVarSet = new SetOType<OType>(parSet);
 			List<Set<OType>> parVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : parSet) {
 				OType parVarHighest = ranking.pickFromSet(copyParVarSet, null);
-				Set<OType> newParVarSet = new HashSet<OType>();
+				Set<OType> newParVarSet = new SetOType<OType>();
 				newParVarSet.add(parVarHighest);
 				copyParVarSet.remove(parVarHighest);
 				parVarPermutation.add(newParVarSet);
@@ -280,12 +280,12 @@ public class ConflictResolution {
 		}
 		for (OType leftHandSideVarQualifier : leftHandSideVarSet) {
 			OType leftHandSideVarHighest = ranking.pickFromSet(copyLeftHandSideVarSet, null);
-			Set<OType> newLeftHandSideVarSet = new HashSet<OType>();
+			Set<OType> newLeftHandSideVarSet = new SetOType<OType>();
 			newLeftHandSideVarSet.add(leftHandSideVarHighest);
 			copyLeftHandSideVarSet.remove(leftHandSideVarHighest);
 			for (OType methodVarQualifier : methodAUTypings) {
 				OType methodVarHighest = ranking.pickFromSet(copyMethodVarSet, null);
-				Set<OType> newMethodVarSet = new HashSet<OType>();
+				Set<OType> newMethodVarSet = new SetOType<OType>();
 				newMethodVarSet.add(methodVarHighest);
 				copyMethodVarSet.remove(methodVarHighest);
 				int i = 0;
@@ -326,10 +326,10 @@ public class ConflictResolution {
 		List<TM> permutationTMs = new ArrayList<TM>();
 		
 		Set<OType> leftHandSideVarSet = newTM.getAnalysisResult(leftHandSideVar);
-		Set<OType> copyLeftHandSideVarSet = new HashSet<OType>(leftHandSideVarSet);
+		Set<OType> copyLeftHandSideVarSet = new SetOType<OType>(leftHandSideVarSet);
 		
 		Set<OType> methodVarSet = newTM.getAnalysisResult(methodVar);
-		Set<OType> copyMethodVarSet = new HashSet<OType>(methodVarSet);
+		Set<OType> copyMethodVarSet = new SetOType<OType>(methodVarSet);
 		
 		List<Set<OType>> listArgVarSets = new ArrayList<Set<OType>>();
 		for (Variable argVar : argOperands) {
@@ -338,11 +338,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListArgVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> argSet : listArgVarSets) {
-			Set<OType> copyArgVarSet = new HashSet<OType>(argSet);
+			Set<OType> copyArgVarSet = new SetOType<OType>(argSet);
 			List<Set<OType>> argVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : argSet) {
 				OType argVarHighest = ranking.pickFromSet(copyArgVarSet, null);
-				Set<OType> newArgVarSet = new HashSet<OType>();
+				Set<OType> newArgVarSet = new SetOType<OType>();
 				newArgVarSet.add(argVarHighest);
 				copyArgVarSet.remove(argVarHighest);
 				argVarPermutation.add(newArgVarSet);
@@ -356,11 +356,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListParVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> parSet : listParVarSets) {
-			Set<OType> copyParVarSet = new HashSet<OType>(parSet);
+			Set<OType> copyParVarSet = new SetOType<OType>(parSet);
 			List<Set<OType>> parVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : parSet) {
 				OType parVarHighest = ranking.pickFromSet(copyParVarSet, null);
-				Set<OType> newParVarSet = new HashSet<OType>();
+				Set<OType> newParVarSet = new SetOType<OType>();
 				newParVarSet.add(parVarHighest);
 				copyParVarSet.remove(parVarHighest);
 				parVarPermutation.add(newParVarSet);
@@ -369,12 +369,12 @@ public class ConflictResolution {
 		}
 		for (OType leftHandSideVarQualifier : leftHandSideVarSet) {
 			OType leftHandSideVarHighest = ranking.pickFromSet(copyLeftHandSideVarSet, null);
-			Set<OType> newLeftHandSideVarSet = new HashSet<OType>();
+			Set<OType> newLeftHandSideVarSet = new SetOType<OType>();
 			newLeftHandSideVarSet.add(leftHandSideVarHighest);
 			copyLeftHandSideVarSet.remove(leftHandSideVarHighest);
 			for (OType methodVarQualifier : methodVarSet) {
 				OType methodVarHighest = ranking.pickFromSet(copyMethodVarSet, null);
-				Set<OType> newMethodVarSet = new HashSet<OType>();
+				Set<OType> newMethodVarSet = new SetOType<OType>();
 				newMethodVarSet.add(methodVarHighest);
 				copyMethodVarSet.remove(methodVarHighest);
 				int i = 0;
@@ -422,11 +422,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListArgVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> argSet : listArgVarSets) {
-			Set<OType> copyArgVarSet = new HashSet<OType>(argSet);
+			Set<OType> copyArgVarSet = new SetOType<OType>(argSet);
 			List<Set<OType>> argVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : argSet) {
 				OType argVarHighest = ranking.pickFromSet(copyArgVarSet, null);
-				Set<OType> newArgVarSet = new HashSet<OType>();
+				Set<OType> newArgVarSet = new SetOType<OType>();
 				newArgVarSet.add(argVarHighest);
 				copyArgVarSet.remove(argVarHighest);
 				argVarPermutation.add(newArgVarSet);
@@ -469,11 +469,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListArgVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> argSet : listArgVarSets) {
-			Set<OType> copyArgVarSet = new HashSet<OType>(argSet);
+			Set<OType> copyArgVarSet = new SetOType<OType>(argSet);
 			List<Set<OType>> argVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : argSet) {
 				OType argVarHighest = ranking.pickFromSet(copyArgVarSet, null);
-				Set<OType> newArgVarSet = new HashSet<OType>();
+				Set<OType> newArgVarSet = new SetOType<OType>();
 				newArgVarSet.add(argVarHighest);
 				copyArgVarSet.remove(argVarHighest);
 				argVarPermutation.add(newArgVarSet);
@@ -487,11 +487,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListParVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> parSet : listParVarSets) {
-			Set<OType> copyParVarSet = new HashSet<OType>(parSet);
+			Set<OType> copyParVarSet = new SetOType<OType>(parSet);
 			List<Set<OType>> parVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : parSet) {
 				OType parVarHighest = ranking.pickFromSet(copyParVarSet, null);
-				Set<OType> newParVarSet = new HashSet<OType>();
+				Set<OType> newParVarSet = new SetOType<OType>();
 				newParVarSet.add(parVarHighest);
 				copyParVarSet.remove(parVarHighest);
 				parVarPermutation.add(newParVarSet);
@@ -530,29 +530,29 @@ public class ConflictResolution {
 		RankingStrategy ranking = RankingStrategy.getInstance();
 		List<TM> permutationTMs = new ArrayList<TM>();
 		Set<OType> leftHandSideVarSet = newTM.getAnalysisResult(leftHandSideVar);
-		Set<OType> copyLeftHandSideVarSet = new HashSet<OType>(leftHandSideVarSet);
+		Set<OType> copyLeftHandSideVarSet = new SetOType<OType>(leftHandSideVarSet);
 		Set<OType> receiverVarSet = newTM.getAnalysisResult(receiverVar);
-		Set<OType> copyReceiverVarSet = new HashSet<OType>(receiverVarSet);
-		Set<OType> copymethodVarSet = new HashSet<OType>(methodAUTypings);
+		Set<OType> copyReceiverVarSet = new SetOType<OType>(receiverVarSet);
+		Set<OType> copymethodVarSet = new SetOType<OType>(methodAUTypings);
 
 		// XXX: loop variable not being used?
 		for (OType lhsVarQualifier : leftHandSideVarSet) {
 			OType lhsVarHighest = ranking.pickFromSet(copyLeftHandSideVarSet, null);
-			Set<OType> newLhsVarSet = new HashSet<OType>();
+			Set<OType> newLhsVarSet = new SetOType<OType>();
 			newLhsVarSet.add(lhsVarHighest);
 			copyLeftHandSideVarSet.remove(lhsVarHighest);
 			copyReceiverVarSet.addAll(receiverVarSet);
 			// XXX: loop variable not being used?
 			for (OType receiverVarQualifier : receiverVarSet) {
 				OType receiverVarHighest = ranking.pickFromSet(copyReceiverVarSet, null);
-				Set<OType> newReceiverVarSet = new HashSet<OType>();
+				Set<OType> newReceiverVarSet = new SetOType<OType>();
 				newReceiverVarSet.add(receiverVarHighest);
 				copyReceiverVarSet.remove(receiverVarHighest);
 				copymethodVarSet.addAll(methodAUTypings);
 				// XXX: loop variable not being used?
 				for (OType thirdVarQualifier : methodAUTypings) {
 					OType thirdVarHighest = ranking.pickFromSet(copymethodVarSet, null);
-					Set<OType> newThirdVarSet = new HashSet<OType>();
+					Set<OType> newThirdVarSet = new SetOType<OType>();
 					newThirdVarSet.add(thirdVarHighest);
 					copymethodVarSet.remove(thirdVarHighest);
 
@@ -588,12 +588,12 @@ public class ConflictResolution {
 		List<TM> permutationTMs = new ArrayList<TM>();
 		
 		Set<OType> leftHandSideVarSet = newTM.getAnalysisResult(leftHandSideVar);
-		Set<OType> copyLeftHandSideVarSet = new HashSet<OType>(leftHandSideVarSet);
+		Set<OType> copyLeftHandSideVarSet = new SetOType<OType>(leftHandSideVarSet);
 		
-		Set<OType> copyMethodVarSet = new HashSet<OType>();
+		Set<OType> copyMethodVarSet = new SetOType<OType>();
 		
 		Set<OType> receiverVarSet = newTM.getAnalysisResult(receiverVar);
-		Set<OType> copyReceiverVarSet = new HashSet<OType>(receiverVarSet);
+		Set<OType> copyReceiverVarSet = new SetOType<OType>(receiverVarSet);
 		
 		List<Set<OType>> listArgVarSets = new ArrayList<Set<OType>>();
 		for (Variable argVar : argOperands) {
@@ -602,11 +602,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListArgVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> argSet : listArgVarSets) {
-			Set<OType> copyArgVarSet = new HashSet<OType>(argSet);
+			Set<OType> copyArgVarSet = new SetOType<OType>(argSet);
 			List<Set<OType>> argVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : argSet) {
 				OType argVarHighest = ranking.pickFromSet(copyArgVarSet, null);
-				Set<OType> newArgVarSet = new HashSet<OType>();
+				Set<OType> newArgVarSet = new SetOType<OType>();
 				newArgVarSet.add(argVarHighest);
 				copyArgVarSet.remove(argVarHighest);
 				argVarPermutation.add(newArgVarSet);
@@ -615,11 +615,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListParVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> parSet : methodParsListTyping) {
-			Set<OType> copyParVarSet = new HashSet<OType>(parSet);
+			Set<OType> copyParVarSet = new SetOType<OType>(parSet);
 			List<Set<OType>> parVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : parSet) {
 				OType parVarHighest = ranking.pickFromSet(copyParVarSet, null);
-				Set<OType> newParVarSet = new HashSet<OType>();
+				Set<OType> newParVarSet = new SetOType<OType>();
 				newParVarSet.add(parVarHighest);
 				copyParVarSet.remove(parVarHighest);
 				parVarPermutation.add(newParVarSet);
@@ -628,17 +628,17 @@ public class ConflictResolution {
 		}
 		for (OType receiverVarQualifier : receiverVarSet) {
 			OType receiverVarHighest = ranking.pickFromSet(copyReceiverVarSet, null);
-			Set<OType> newReceiverVarSet = new HashSet<OType>();
+			Set<OType> newReceiverVarSet = new SetOType<OType>();
 			newReceiverVarSet.add(receiverVarHighest);
 			copyReceiverVarSet.remove(receiverVarHighest);
 			for (OType leftHandSideVarQualifier : leftHandSideVarSet) {
 				OType leftHandSideVarHighest = ranking.pickFromSet(copyLeftHandSideVarSet, null);
-				Set<OType> newLeftHandSideVarSet = new HashSet<OType>();
+				Set<OType> newLeftHandSideVarSet = new SetOType<OType>();
 				newLeftHandSideVarSet.add(leftHandSideVarHighest);
 				copyLeftHandSideVarSet.remove(leftHandSideVarHighest);
 				for (OType methodVarQualifier : methodAUTypings) {
 					OType methodVarHighest = ranking.pickFromSet(copyMethodVarSet, null);
-					Set<OType> newMethodVarSet = new HashSet<OType>();
+					Set<OType> newMethodVarSet = new SetOType<OType>();
 					newMethodVarSet.add(methodVarHighest);
 					copyMethodVarSet.remove(methodVarHighest);
 					int i = 0;
@@ -683,13 +683,13 @@ public class ConflictResolution {
 		List<TM> permutationTMs = new ArrayList<TM>();
 		
 		Set<OType> leftHandSideVarSet = newTM.getAnalysisResult(leftHandSideVar);
-		Set<OType> copyLeftHandSideVarSet = new HashSet<OType>(leftHandSideVarSet);
+		Set<OType> copyLeftHandSideVarSet = new SetOType<OType>(leftHandSideVarSet);
 		
 		Set<OType> methodVarSet = newTM.getAnalysisResult(methodVar);
-		Set<OType> copyMethodVarSet = new HashSet<OType>(methodVarSet);
+		Set<OType> copyMethodVarSet = new SetOType<OType>(methodVarSet);
 		
 		Set<OType> receiverVarSet = newTM.getAnalysisResult(receiverVar);
-		Set<OType> copyReceiverVarSet = new HashSet<OType>(receiverVarSet);
+		Set<OType> copyReceiverVarSet = new SetOType<OType>(receiverVarSet);
 		
 		List<Set<OType>> listArgVarSets = new ArrayList<Set<OType>>();
 		for (Variable argVar : argOperands) {
@@ -698,11 +698,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListArgVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> argSet : listArgVarSets) {
-			Set<OType> copyArgVarSet = new HashSet<OType>(argSet);
+			Set<OType> copyArgVarSet = new SetOType<OType>(argSet);
 			List<Set<OType>> argVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : argSet) {
 				OType argVarHighest = ranking.pickFromSet(copyArgVarSet, null);
-				Set<OType> newArgVarSet = new HashSet<OType>();
+				Set<OType> newArgVarSet = new SetOType<OType>();
 				newArgVarSet.add(argVarHighest);
 				copyArgVarSet.remove(argVarHighest);
 				argVarPermutation.add(newArgVarSet);
@@ -716,11 +716,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListParVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> parSet : listParVarSets) {
-			Set<OType> copyParVarSet = new HashSet<OType>(parSet);
+			Set<OType> copyParVarSet = new SetOType<OType>(parSet);
 			List<Set<OType>> parVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : parSet) {
 				OType parVarHighest = ranking.pickFromSet(copyParVarSet, null);
-				Set<OType> newParVarSet = new HashSet<OType>();
+				Set<OType> newParVarSet = new SetOType<OType>();
 				newParVarSet.add(parVarHighest);
 				copyParVarSet.remove(parVarHighest);
 				parVarPermutation.add(newParVarSet);
@@ -729,17 +729,17 @@ public class ConflictResolution {
 		}
 		for (OType receiverVarQualifier : receiverVarSet) {
 			OType receiverVarHighest = ranking.pickFromSet(copyReceiverVarSet, null);
-			Set<OType> newReceiverVarSet = new HashSet<OType>();
+			Set<OType> newReceiverVarSet = new SetOType<OType>();
 			newReceiverVarSet.add(receiverVarHighest);
 			copyReceiverVarSet.remove(receiverVarHighest);
 			for (OType leftHandSideVarQualifier : leftHandSideVarSet) {
 				OType leftHandSideVarHighest = ranking.pickFromSet(copyLeftHandSideVarSet, null);
-				Set<OType> newLeftHandSideVarSet = new HashSet<OType>();
+				Set<OType> newLeftHandSideVarSet = new SetOType<OType>();
 				newLeftHandSideVarSet.add(leftHandSideVarHighest);
 				copyLeftHandSideVarSet.remove(leftHandSideVarHighest);
 				for (OType methodVarQualifier : methodVarSet) {
 					OType methodVarHighest = ranking.pickFromSet(copyMethodVarSet, null);
-					Set<OType> newMethodVarSet = new HashSet<OType>();
+					Set<OType> newMethodVarSet = new SetOType<OType>();
 					newMethodVarSet.add(methodVarHighest);
 					copyMethodVarSet.remove(methodVarHighest);
 					int i = 0;
@@ -783,7 +783,7 @@ public class ConflictResolution {
 		List<TM> permutationTMs = new ArrayList<TM>();
 		
 		Set<OType> receiverVarSet = newTM.getAnalysisResult(receiverVar);
-		Set<OType> copyReceiverVarSet = new HashSet<OType>(receiverVarSet);
+		Set<OType> copyReceiverVarSet = new SetOType<OType>(receiverVarSet);
 		List<Set<OType>> listArgVarSets = new ArrayList<Set<OType>>();
 		for (Variable argVar : argOperands) {
 			Set<OType> argVarSet = newTM.getAnalysisResult(argVar);
@@ -791,11 +791,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListArgVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> argSet : listArgVarSets) {
-			Set<OType> copyArgVarSet = new HashSet<OType>(argSet);
+			Set<OType> copyArgVarSet = new SetOType<OType>(argSet);
 			List<Set<OType>> argVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : argSet) {
 				OType argVarHighest = ranking.pickFromSet(copyArgVarSet, null);
-				Set<OType> newArgVarSet = new HashSet<OType>();
+				Set<OType> newArgVarSet = new SetOType<OType>();
 				newArgVarSet.add(argVarHighest);
 				copyArgVarSet.remove(argVarHighest);
 				argVarPermutation.add(newArgVarSet);
@@ -804,7 +804,7 @@ public class ConflictResolution {
 		}
 		for (OType receiverVarQualifier : receiverVarSet) {
 			OType receiverVarHighest = ranking.pickFromSet(copyReceiverVarSet, null);
-			Set<OType> newReceiverVarSet = new HashSet<OType>();
+			Set<OType> newReceiverVarSet = new SetOType<OType>();
 			newReceiverVarSet.add(receiverVarHighest);
 			copyReceiverVarSet.remove(receiverVarHighest);
 			int i = 0;
@@ -841,7 +841,7 @@ public class ConflictResolution {
 		List<TM> permutationTMs = new ArrayList<TM>();
 		
 		Set<OType> receiverVarSet = newTM.getAnalysisResult(receiverVar);
-		Set<OType> copyReceiverVarSet = new HashSet<OType>(receiverVarSet);
+		Set<OType> copyReceiverVarSet = new SetOType<OType>(receiverVarSet);
 		List<Set<OType>> listArgVarSets = new ArrayList<Set<OType>>();
 		for (Variable argVar : argOperands) {
 			Set<OType> argVarSet = newTM.getAnalysisResult(argVar);
@@ -849,11 +849,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListArgVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> argSet : listArgVarSets) {
-			Set<OType> copyArgVarSet = new HashSet<OType>(argSet);
+			Set<OType> copyArgVarSet = new SetOType<OType>(argSet);
 			List<Set<OType>> argVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : argSet) {
 				OType argVarHighest = ranking.pickFromSet(copyArgVarSet, null);
-				Set<OType> newArgVarSet = new HashSet<OType>();
+				Set<OType> newArgVarSet = new SetOType<OType>();
 				newArgVarSet.add(argVarHighest);
 				copyArgVarSet.remove(argVarHighest);
 				argVarPermutation.add(newArgVarSet);
@@ -867,11 +867,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListParVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> parSet : listParVarSets) {
-			Set<OType> copyParVarSet = new HashSet<OType>(parSet);
+			Set<OType> copyParVarSet = new SetOType<OType>(parSet);
 			List<Set<OType>> parVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : parSet) {
 				OType parVarHighest = ranking.pickFromSet(copyParVarSet, null);
-				Set<OType> newParVarSet = new HashSet<OType>();
+				Set<OType> newParVarSet = new SetOType<OType>();
 				newParVarSet.add(parVarHighest);
 				copyParVarSet.remove(parVarHighest);
 				parVarPermutation.add(newParVarSet);
@@ -880,7 +880,7 @@ public class ConflictResolution {
 		}
 		for (OType receiverVarQualifier : receiverVarSet) {
 			OType receiverVarHighest = ranking.pickFromSet(copyReceiverVarSet, null);
-			Set<OType> newReceiverVarSet = new HashSet<OType>();
+			Set<OType> newReceiverVarSet = new SetOType<OType>();
 			newReceiverVarSet.add(receiverVarHighest);
 			copyReceiverVarSet.remove(receiverVarHighest);
 			int i = 0;
@@ -918,7 +918,7 @@ public class ConflictResolution {
 		RankingStrategy ranking = RankingStrategy.getInstance();
 		List<TM> permutationTMs = new ArrayList<TM>();
 		Set<OType> lhsVarSet = newTM.getAnalysisResult(leftHandSideVar);
-		Set<OType> copyLhsVarSet = new HashSet<OType>(lhsVarSet);
+		Set<OType> copyLhsVarSet = new SetOType<OType>(lhsVarSet);
 		List<Set<OType>> listArgVarSets = new ArrayList<Set<OType>>();
 		for (Variable argVar : argOperands) {
 			Set<OType> argVarSet = newTM.getAnalysisResult(argVar);
@@ -926,11 +926,11 @@ public class ConflictResolution {
 		}
 		List<List<Set<OType>>> newListArgVarSets = new ArrayList<List<Set<OType>>>();
 		for (Set<OType> argSet : listArgVarSets) {
-			Set<OType> copyArgVarSet = new HashSet<OType>(argSet);
+			Set<OType> copyArgVarSet = new SetOType<OType>(argSet);
 			List<Set<OType>> argVarPermutation = new ArrayList<Set<OType>>();
 			for (OType oType : argSet) {
 				OType argVarHighest = ranking.pickFromSet(copyArgVarSet, null);
-				Set<OType> newArgVarSet = new HashSet<OType>();
+				Set<OType> newArgVarSet = new SetOType<OType>();
 				newArgVarSet.add(argVarHighest);
 				copyArgVarSet.remove(argVarHighest);
 				argVarPermutation.add(newArgVarSet);
@@ -939,7 +939,7 @@ public class ConflictResolution {
 		}
 		for (OType lhsVarQualifier : lhsVarSet) {
 			OType leftHandSideVarHighest = ranking.pickFromSet(copyLhsVarSet, null);
-			Set<OType> newLhsVarSet = new HashSet<OType>();
+			Set<OType> newLhsVarSet = new SetOType<OType>();
 			newLhsVarSet.add(leftHandSideVarHighest);
 			copyLhsVarSet.remove(leftHandSideVarHighest);
 			int i = 0;
@@ -973,30 +973,30 @@ public class ConflictResolution {
 		RankingStrategy ranking = RankingStrategy.getInstance();
 		List<TM> permutationTMs = new ArrayList<TM>();
 		Set<OType> firstVarSet = newTM.getAnalysisResult(firstVar);
-		Set<OType> copyFirstVarSet = new HashSet<OType>(firstVarSet);
+		Set<OType> copyFirstVarSet = new SetOType<OType>(firstVarSet);
 		Set<OType> secondVarSet = newTM.getAnalysisResult(secondVar);
-		Set<OType> copySecondVarSet = new HashSet<OType>(secondVarSet);
+		Set<OType> copySecondVarSet = new SetOType<OType>(secondVarSet);
 		Set<OType> thirdVarSet = newTM.getAnalysisResult(thirdVar);
-		Set<OType> copyThirdVarSet = new HashSet<OType>(thirdVarSet);
+		Set<OType> copyThirdVarSet = new SetOType<OType>(thirdVarSet);
 
 		// XXX: loop variable not being used?
 		for (OType firstVarQualifier : firstVarSet) {
 			OType firstVarHighest = ranking.pickFromSet(copyFirstVarSet, null);
-			Set<OType> newFirstVarSet = new HashSet<OType>();
+			Set<OType> newFirstVarSet = new SetOType<OType>();
 			newFirstVarSet.add(firstVarHighest);
 			copyFirstVarSet.remove(firstVarHighest);
 			copySecondVarSet.addAll(secondVarSet);
 			// XXX: loop variable not being used?
 			for (OType secondVarQualifier : secondVarSet) {
 				OType secondVarHighest = ranking.pickFromSet(copySecondVarSet, null);
-				Set<OType> newSecondVarSet = new HashSet<OType>();
+				Set<OType> newSecondVarSet = new SetOType<OType>();
 				newSecondVarSet.add(secondVarHighest);
 				copySecondVarSet.remove(secondVarHighest);
 				copyThirdVarSet.addAll(thirdVarSet);
 				// XXX: loop variable not being used?
 				for (OType thirdVarQualifier : thirdVarSet) {
 					OType thirdVarHighest = ranking.pickFromSet(copyThirdVarSet, null);
-					Set<OType> newThirdVarSet = new HashSet<OType>();
+					Set<OType> newThirdVarSet = new SetOType<OType>();
 					newThirdVarSet.add(thirdVarHighest);
 					copyThirdVarSet.remove(thirdVarHighest);
 
@@ -1026,9 +1026,9 @@ public class ConflictResolution {
 		RankingStrategy ranking = RankingStrategy.getInstance();
 		List<TM> permutationTMs = new ArrayList<TM>();
 		Set<OType> firstVarSet = newTM.getAnalysisResult(firstVar);
-		Set<OType> copyFirstVarSet = new HashSet<OType>(firstVarSet);
+		Set<OType> copyFirstVarSet = new SetOType<OType>(firstVarSet);
 		Set<OType> secondVarSet = newTM.getAnalysisResult(secondVar);
-		Set<OType> copySecondVarSet = new HashSet<OType>(secondVarSet);
+		Set<OType> copySecondVarSet = new SetOType<OType>(secondVarSet);
 
 		// Build All the permutations of the qualifiers of the two variables as a pair, from the highest
 		//  ranked of the first one to the lowest ranked on the second one
@@ -1039,7 +1039,7 @@ public class ConflictResolution {
 		// Can just delete the for loop?		
 		for (OType firstVarQualifier : firstVarSet) {
 			OType firstVarHighest = ranking.pickFromSet(copyFirstVarSet, null);
-			Set<OType> newFirstVarSet = new HashSet<OType>();
+			Set<OType> newFirstVarSet = new SetOType<OType>();
 			newFirstVarSet.add(firstVarHighest);
 			copyFirstVarSet.remove(firstVarHighest);
 			copySecondVarSet.addAll(secondVarSet);
@@ -1047,7 +1047,7 @@ public class ConflictResolution {
 			// Can just delete the for loop?
 			for (OType secondVarQualifier : secondVarSet) {
 				OType secondVarHighest = ranking.pickFromSet(copySecondVarSet, null);
-				Set<OType> newSecondVarSet = new HashSet<OType>();
+				Set<OType> newSecondVarSet = new SetOType<OType>();
 				newSecondVarSet.add(secondVarHighest);
 				copySecondVarSet.remove(secondVarHighest);
 
@@ -1071,7 +1071,7 @@ public class ConflictResolution {
 			for (int i = 0; i < operandSet.size(); i++) {
 				OType highestQualifier = ranking.pickFromSet(operandSet, null);
 				operandSet.remove(highestQualifier);
-				Set<OType> singletonSet = new HashSet<OType>();
+				Set<OType> singletonSet = new SetOType<OType>();
 				singletonSet.add(highestQualifier);
 				operandPermList.add(singletonSet);
 			}
@@ -1083,7 +1083,7 @@ public class ConflictResolution {
 			for (int i = 0; i < targetSet.size(); i++) {
 				OType highestQualifier = ranking.pickFromSet(targetSet, null);
 				targetSet.remove(highestQualifier);
-				Set<OType> singletonSet = new HashSet<OType>();
+				Set<OType> singletonSet = new SetOType<OType>();
 				singletonSet.add(highestQualifier);
 				targetPermList.add(singletonSet);
 			}
@@ -1097,7 +1097,7 @@ public class ConflictResolution {
 			for (int i = 0; i < operandSet.size(); i++) {
 				OType highestQualifier = ranking.pickFromSet(operandSet, null);
 				operandSet.remove(highestQualifier);
-				Set<OType> singletonSet = new HashSet<OType>();
+				Set<OType> singletonSet = new SetOType<OType>();
 				singletonSet.add(highestQualifier);
 				operandPermList.add(singletonSet);
 			}
@@ -1109,7 +1109,7 @@ public class ConflictResolution {
 			for (int i = 0; i < targetSet.size(); i++) {
 				OType highestQualifier = ranking.pickFromSet(targetSet, null);
 				targetSet.remove(highestQualifier);
-				Set<OType> singletonSet = new HashSet<OType>();
+				Set<OType> singletonSet = new SetOType<OType>();
 				singletonSet.add(highestQualifier);
 				targetPermList.add(singletonSet);
 			}
@@ -1123,7 +1123,7 @@ public class ConflictResolution {
 			for (int i = 0; i < returnedVarSet.size(); i++) {
 				OType highestQualifier = ranking.pickFromSet(returnedVarSet, null);
 				returnedVarSet.remove(highestQualifier);
-				Set<OType> singletonSet = new HashSet<OType>();
+				Set<OType> singletonSet = new SetOType<OType>();
 				singletonSet.add(highestQualifier);
 				returnedVarPermList.add(singletonSet);
 			}
@@ -1146,7 +1146,7 @@ public class ConflictResolution {
 					for (int i = 0; i < methodVarSet.size(); i++) {
 						OType highestQualifier = ranking.pickFromSet(methodVarSet, null);
 						methodVarSet.remove(highestQualifier);
-						Set<OType> singletonSet = new HashSet<OType>();
+						Set<OType> singletonSet = new SetOType<OType>();
 						singletonSet.add(highestQualifier);
 						methodVarPermList.add(singletonSet);
 					}
@@ -1163,7 +1163,7 @@ public class ConflictResolution {
 				for (int i = 0; i < receiverVarSet.size(); i++) {
 					OType highestQualifier = ranking.pickFromSet(receiverVarSet, null);
 					receiverVarSet.remove(highestQualifier);
-					Set<OType> singletonSet = new HashSet<OType>();
+					Set<OType> singletonSet = new SetOType<OType>();
 					singletonSet.add(highestQualifier);
 					receiverVarPermList.add(singletonSet);
 				}
@@ -1176,7 +1176,7 @@ public class ConflictResolution {
 			for (int i = 0; i < targetSet.size(); i++) {
 				OType highestQualifier = ranking.pickFromSet(targetSet, null);
 				targetSet.remove(highestQualifier);
-				Set<OType> singletonSet = new HashSet<OType>();
+				Set<OType> singletonSet = new SetOType<OType>();
 				singletonSet.add(highestQualifier);
 				targetPermList.add(singletonSet);
 			}
@@ -1191,7 +1191,7 @@ public class ConflictResolution {
 				for (int i = 0; i < fieldVarSet.size(); i++) {
 					OType highestQualifier = ranking.pickFromSet(fieldVarSet, null);
 					fieldVarSet.remove(highestQualifier);
-					Set<OType> singletonSet = new HashSet<OType>();
+					Set<OType> singletonSet = new SetOType<OType>();
 					singletonSet.add(highestQualifier);
 					fieldVarPermList.add(singletonSet);
 				}
@@ -1208,7 +1208,7 @@ public class ConflictResolution {
 				for (int i = 0; i < argVarSet.size(); i++) {
 					OType highestQualifier = ranking.pickFromSet(argVarSet, null);
 					argVarSet.remove(highestQualifier);
-					Set<OType> singletonSet = new HashSet<OType>();
+					Set<OType> singletonSet = new SetOType<OType>();
 					singletonSet.add(highestQualifier);
 					argVarPermList.add(singletonSet);
 				}
@@ -1222,7 +1222,7 @@ public class ConflictResolution {
 				for (int i = 0; i < receiverVarSet.size(); i++) {
 					OType highestQualifier = ranking.pickFromSet(receiverVarSet, null);
 					receiverVarSet.remove(highestQualifier);
-					Set<OType> singletonSet = new HashSet<OType>();
+					Set<OType> singletonSet = new SetOType<OType>();
 					singletonSet.add(highestQualifier);
 					receiverVarPermList.add(singletonSet);
 				}
@@ -1236,7 +1236,7 @@ public class ConflictResolution {
 				for (int i = 0; i < targetSet.size(); i++) {
 					OType highestQualifier = ranking.pickFromSet(targetSet, null);
 					targetSet.remove(highestQualifier);
-					Set<OType> singletonSet = new HashSet<OType>();
+					Set<OType> singletonSet = new SetOType<OType>();
 					singletonSet.add(highestQualifier);
 					targetPermList.add(singletonSet);
 				}
@@ -1254,7 +1254,7 @@ public class ConflictResolution {
 					for (int i = 0; i < parVarSet.size(); i++) {
 						OType highestQualifier = ranking.pickFromSet(parVarSet, null);
 						parVarSet.remove(highestQualifier);
-						Set<OType> singletonSet = new HashSet<OType>();
+						Set<OType> singletonSet = new SetOType<OType>();
 						singletonSet.add(highestQualifier);
 						parVarPermList.add(singletonSet);
 					}
@@ -1268,7 +1268,7 @@ public class ConflictResolution {
 						for (int i = 0; i < methodVarSet.size(); i++) {
 							OType highestQualifier = ranking.pickFromSet(methodVarSet, null);
 							methodVarSet.remove(highestQualifier);
-							Set<OType> singletonSet = new HashSet<OType>();
+							Set<OType> singletonSet = new SetOType<OType>();
 							singletonSet.add(highestQualifier);
 							methodVarPermList.add(singletonSet);
 						}
@@ -1284,7 +1284,7 @@ public class ConflictResolution {
 					for (int i = 0; i < methodVarSet.size(); i++) {
 						OType highestQualifier = ranking.pickFromSet(methodVarSet, null);
 						methodVarSet.remove(highestQualifier);
-						Set<OType> singletonSet = new HashSet<OType>();
+						Set<OType> singletonSet = new SetOType<OType>();
 						singletonSet.add(highestQualifier);
 						methodVarPermList.add(singletonSet);
 					}
@@ -1298,7 +1298,7 @@ public class ConflictResolution {
 					for (int i = 0; i < set.size(); i++) {
 						OType highestQualifier = ranking.pickFromSet(set, null);
 						set.remove(highestQualifier);
-						Set<OType> singletonSet = new HashSet<OType>();
+						Set<OType> singletonSet = new SetOType<OType>();
 						singletonSet.add(highestQualifier);
 						methodVarPermList.add(singletonSet);
 					}
@@ -1316,7 +1316,7 @@ public class ConflictResolution {
 			for (int i = 0; i < targetSet.size(); i++) {
 				OType highestQualifier = ranking.pickFromSet(targetSet, null);
 				targetSet.remove(highestQualifier);
-				Set<OType> singletonSet = new HashSet<OType>();
+				Set<OType> singletonSet = new SetOType<OType>();
 				singletonSet.add(highestQualifier);
 				targetPermList.add(singletonSet);
 			}
@@ -1328,7 +1328,7 @@ public class ConflictResolution {
 				for (int i = 0; i < argVarSet.size(); i++) {
 					OType highestQualifier = ranking.pickFromSet(argVarSet, null);
 					argVarSet.remove(highestQualifier);
-					Set<OType> singletonSet = new HashSet<OType>();
+					Set<OType> singletonSet = new SetOType<OType>();
 					singletonSet.add(highestQualifier);
 					argVarPermList.add(singletonSet);
 				}
@@ -1344,7 +1344,7 @@ public class ConflictResolution {
 				for (int i = 0; i < receiverVarSet.size(); i++) {
 					OType highestQualifier = ranking.pickFromSet(receiverVarSet, null);
 					receiverVarSet.remove(highestQualifier);
-					Set<OType> singletonSet = new HashSet<OType>();
+					Set<OType> singletonSet = new SetOType<OType>();
 					singletonSet.add(highestQualifier);
 					receiverVarPermList.add(singletonSet);
 				}
@@ -1357,7 +1357,7 @@ public class ConflictResolution {
 			for (int i = 0; i < rhsVarSet.size(); i++) {
 				OType highestQualifier = ranking.pickFromSet(rhsVarSet, null);
 				rhsVarSet.remove(highestQualifier);
-				Set<OType> singletonSet = new HashSet<OType>();
+				Set<OType> singletonSet = new SetOType<OType>();
 				singletonSet.add(highestQualifier);
 				rhsVarPermList.add(singletonSet);
 			}
@@ -1372,7 +1372,7 @@ public class ConflictResolution {
 				for (int i = 0; i < fieldVarSet.size(); i++) {
 					OType highestQualifier = ranking.pickFromSet(fieldVarSet, null);
 					fieldVarSet.remove(highestQualifier);
-					Set<OType> singletonSet = new HashSet<OType>();
+					Set<OType> singletonSet = new SetOType<OType>();
 					singletonSet.add(highestQualifier);
 					fieldVarPermList.add(singletonSet);
 				}

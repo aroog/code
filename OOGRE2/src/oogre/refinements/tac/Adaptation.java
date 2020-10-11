@@ -86,7 +86,7 @@ public class Adaptation {
 		anyTyping.append("lent");
 	
 		
-		Set<OType> retValSet = new HashSet<OType>();
+		Set<OType> retValSet = new SetOType<OType>();
 		OType retVal = null;
 		
 		// Extract type binding of receiver to check for generics
@@ -1037,7 +1037,7 @@ public class Adaptation {
 	 * @return outer set
 	 */
 	public static Set<OType> adaptOutSet(Set<OType> in, Set<OType> receiver, Variable receiverVar, ITypeBinding innerType){
-		Set<OType> retSet = new HashSet<OType>();
+		Set<OType> retSet = new SetOType<OType>();
 		for (OType inOType : in) {
 			for (OType recOType : receiver) {
 				Set<OType> newOType = adaptOut(inOType,recOType, receiverVar, innerType);
@@ -1057,7 +1057,7 @@ public class Adaptation {
 	 * @return
 	 */
 	public static Set<OType> adaptIn(OType out, OType receiver, Variable receiverVar, ITypeBinding innerType){
-		Set<OType> retVal = new HashSet<OType>();
+		Set<OType> retVal = new SetOType<OType>();
 		
 		ITypeBinding receiverType = receiverVar.resolveType();
 		String receiverName = receiverVar.getSourceString();
@@ -2118,6 +2118,10 @@ public class Adaptation {
 				retVal.add(retOType);
 				retOType = new OType( "unique", "owner");
 				retVal.add(retOType);
+				if(out.getOwner().equals("unique")){
+					retOType = new OType( "that.PD", "owner");
+					retVal.add(retOType);
+				}
 			}
 			// adap-l-p, adap-u-p
 			if(out.getAlpha().equals(receiver.getAlpha())){
@@ -2125,6 +2129,10 @@ public class Adaptation {
 				retVal.add(retOType);
 				retOType = new OType( "unique", "p");
 				retVal.add(retOType);
+				if(out.getOwner().equals("unique")){
+					retOType = new OType( "that.PD", "p");
+					retVal.add(retOType);
+				}
 			}
 			// adap-l-d, adap-u-d
 			if(out.getAlpha().equals(nPDQualifier)){
@@ -2132,6 +2140,10 @@ public class Adaptation {
 				retVal.add(retOType);
 				retOType = new OType( "unique", "that.PD");
 				retVal.add(retOType);
+				if(out.getOwner().equals("unique")){
+					retOType = new OType( "that.PD", "that.PD");
+					retVal.add(retOType);
+				}
 			}
 			// adap-l-s, adap-u-s
 			if(out.getAlpha().equals("shared")){
@@ -2139,6 +2151,10 @@ public class Adaptation {
 				retVal.add(retOType);
 				retOType = new OType( "unique", "shared");
 				retVal.add(retOType);
+				if(out.getOwner().equals("unique")){
+					retOType = new OType( "that.PD", "shared");
+					retVal.add(retOType);
+				}
 			}
 		}
 		return retVal;
@@ -2152,7 +2168,7 @@ public class Adaptation {
 	 * @return inner set
 	 */
 	public static Set<OType> adaptInSet(Set<OType> out, Set<OType> receiver, Variable receiverVar, ITypeBinding innerType){
-		Set<OType> retSet = new HashSet<OType>();
+		Set<OType> retSet = new SetOType<OType>();
 		for (OType outOType : out) {
 			for (OType rcvOType : receiver) {
 				Set<OType> newOType = adaptIn(outOType,rcvOType,receiverVar, innerType);
@@ -2172,7 +2188,7 @@ public class Adaptation {
 	 * @return receiver set as a set of OTypes.
 	 */
 	public static Set<OType> adaptRcvSet(Set<OType> outSet, Set<OType> inSet, Variable receiver, TM tm, ITypeBinding innerType){
-		Set<OType> retSet = new HashSet<OType>();
+		Set<OType> retSet = new SetOType<OType>();
 		OType retVal = null;
 		
 		ITypeBinding receiverType = receiver.resolveType();
@@ -3073,7 +3089,7 @@ public class Adaptation {
 	 * @return a set of qualifiers contain <X,alpha,Y>
 	 */
 	private static Set<OType> doNotCareOwnerAndInnerGeneric(String alpha) {
-		Set<OType> returnSet = new HashSet<OType>();
+		Set<OType> returnSet = new SetOType<OType>();
 		OType retVal = new OType("this.owned", alpha, "this.owned");
 		returnSet.add(retVal);
 		retVal = new OType("this.owned", alpha, "this.PD");
@@ -3176,7 +3192,7 @@ public class Adaptation {
 	 * @return a set of qualifiers contain <owner,X,Y>
 	 */
 	private static Set<OType> doNotCareAlphaAndInnerAndGeneric(String owner) {
-		Set<OType> returnSet = new HashSet<OType>();
+		Set<OType> returnSet = new SetOType<OType>();
 		OType retVal = new OType(owner, "this.owned","this.owned");
 		returnSet.add(retVal);
 		retVal = new OType(owner, "this.owned","this.PD");
@@ -3242,7 +3258,7 @@ public class Adaptation {
 	 * @return a set of qualifiers contain <X, alpha>
 	 */
 	private static Set<OType> doNotCareInnerGeneric(String owner, String alpha) {
-		Set<OType> returnSet = new HashSet<OType>();
+		Set<OType> returnSet = new SetOType<OType>();
 		OType retVal = new OType(owner, alpha, "this.owned");
 		returnSet.add(retVal);
 		retVal = new OType(owner, alpha, "this.PD");
@@ -3263,7 +3279,7 @@ public class Adaptation {
 	 * @return a set of qualifiers contain <X, alpha, inner>
 	 */
 	private static Set<OType> doNotCareOwnerGeneric(String alpha, String inner) {
-		Set<OType> returnSet = new HashSet<OType>();
+		Set<OType> returnSet = new SetOType<OType>();
 		OType retVal = new OType("this.owned", alpha, inner);
 		returnSet.add(retVal);
 		retVal = new OType("this.PD", alpha, inner);
@@ -3287,7 +3303,7 @@ public class Adaptation {
 	 * @return a set of qualifiers contain <X, alpha>
 	 */
 	private static Set<OType> doNotCareOwner(String alpha) {
-		Set<OType> returnSet = new HashSet<OType>();
+		Set<OType> returnSet = new SetOType<OType>();
 		OType retVal = new OType("this.owned", alpha);
 		returnSet.add(retVal);
 		retVal = new OType("this.PD", alpha);
@@ -3312,7 +3328,7 @@ public class Adaptation {
 	 * @return a set of qualifiers contain <X, alpha>
 	 */
 	private static Set<OType> doNotCareAlpha(String owner) {
-		Set<OType> returnSet = new HashSet<OType>();
+		Set<OType> returnSet = new SetOType<OType>();
 		OType retVal = new OType(owner, "this.owned");
 		returnSet.add(retVal);
 		retVal = new OType(owner, "this.PD");

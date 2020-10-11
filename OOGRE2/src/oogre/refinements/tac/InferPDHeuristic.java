@@ -44,7 +44,7 @@ public class InferPDHeuristic extends Heuristic {
 	public boolean apply(TM tm, TMSolutionType solIndex){
 		boolean isHeuristicApplied = false;
 		Set<Entry<Variable, Set<OType>>> entrySet = tm.entrySet();
-		Set<OType> newSourceTyping = new HashSet<OType>();
+		Set<OType> newSourceTyping = new SetOType<OType>();
 		for (Entry<Variable, Set<OType>> entry : entrySet) {
 			Variable au = entry.getKey();
 			if(au instanceof SourceVariable || au instanceof TACVariable){
@@ -75,7 +75,7 @@ public class InferPDHeuristic extends Heuristic {
 							newSrcTyping = new OType("this.PD", solAlpha);
 							newSourceTyping.add(newSrcTyping);
 						}
-						Set<OType> analysisResult = new HashSet<OType>(newSourceTyping);
+						Set<OType> analysisResult = new SetOType<OType>(newSourceTyping);
 						tm.putTypeMapping(srcVariable, analysisResult);
 
 						// Record the AU being modified directly based on the refinement

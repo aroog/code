@@ -330,7 +330,7 @@ public class RankingStrategy {
 	}
 	
 	private static void testSet1() {
-		Set<OType> set = new HashSet<OType>();
+		Set<OType> set = new SetOType<OType>();
 //	    OType o1 = new OType("unique", "p", "shared");
 //	    set.add(o1);
 //		o1 = new OType("unique", "p", "p");

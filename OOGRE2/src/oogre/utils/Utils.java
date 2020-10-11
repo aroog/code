@@ -1,12 +1,12 @@
 package oogre.utils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import oogre.refinements.tac.AnnotateUnitEnum;
 import oogre.refinements.tac.OType;
+import oogre.refinements.tac.SetOType;
 import oogre.refinements.tac.TACNewExpr;
 import oogre.refinements.tac.TACVariable;
 import oogre.refinements.tac.TM;
@@ -412,8 +412,7 @@ public class Utils {
 		}
 		else if (variable instanceof TACNewExpr) {
 			TACNewExpr srcVariable = (TACNewExpr) variable;
-			IMethodBinding constructorBinding = srcVariable.getConstructorBinding();
-			declType = constructorBinding.getDeclaringClass().getQualifiedName();
+			declType = srcVariable.getEnclosingTypeBinding().getQualifiedName();
 		}
 
 		return declType;
@@ -451,7 +450,7 @@ public class Utils {
 	}
 	
 	public static Set<OType> createLibraryTypingSet(ITypeBinding variableType, boolean isATypeVariable) {
-		Set<OType> libraryTypingSet = new HashSet<OType>();
+		Set<OType> libraryTypingSet = new SetOType<OType>();
 
 		OType oType = null;
 		// Handle generic/parameterized types

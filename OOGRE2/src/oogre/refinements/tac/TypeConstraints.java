@@ -119,18 +119,24 @@ public class TypeConstraints {
 	/**
 	 * T-New: 
 	 * - An object cannot create itself in the public domain of another object
-	 * 
+	 * - If an object cannot be in n.PD, it may be unique
 	 * @param lhsTypingSet
 	 * @return
 	 */
 	public static void tNewNoOthersPublicDomain(Set<OType> lhsTypingSet){
+		Set<OType> uniqueSet = new SetOType<>();
 		Iterator<OType> it = lhsTypingSet.iterator();
 		while (it.hasNext()) {
 			OType oType = it.next();
 			if((oType.getOwner().contains(".PD") && !oType.getOwner().contains("this.PD")) || (oType.getAlpha().contains(".PD") && !oType.getAlpha().contains("this.PD"))){
+				if(oType.getOwner().contains(".PD") && !oType.getOwner().contains("this.PD")){
+					OType uOType = new OType("unique",oType.getAlpha());
+					uniqueSet.add(uOType);
+				}
 				it.remove();
 			}
 		}
+		lhsTypingSet.addAll(uniqueSet);
 	}
 	
 	/**
@@ -144,6 +150,7 @@ public class TypeConstraints {
 		for (OType lhsOType : lhsTypingSet) {
 			if(lhsOType.getOwner().equals("lent")){
 				lhsContainsLent = true;
+				break;
 			}
 		}
 		if(!lhsContainsLent){

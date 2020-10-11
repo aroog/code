@@ -31,7 +31,7 @@ public class InferOwnerHeuristic extends Heuristic {
 		boolean isHeuristicApplied = false;
 		boolean isPublicParam = false;
 		Set<Entry<Variable, Set<OType>>> entrySet = tm.entrySet();
-		Set<OType> newSourceTyping = new HashSet<OType>();
+		Set<OType> newSourceTyping = new SetOType<OType>();
 		// XXX. Can we replace iteration with just 1 lookup: entrySet.get()?
 		for (Entry<Variable, Set<OType>> entry : entrySet) {
 			ITypeBinding declaringClassTypeBinding = null;
@@ -63,7 +63,7 @@ public class InferOwnerHeuristic extends Heuristic {
     						newSrcTyping = new OType("owner", solAlpha);
     						newSourceTyping.add(newSrcTyping);
     					}
-    					Set<OType> analysisResult = new HashSet<OType>(newSourceTyping);
+    					Set<OType> analysisResult = new SetOType<OType>(newSourceTyping);
     					tm.putTypeMapping(var, analysisResult);
 
     					// Record the AU being modified directly based on the refinement

@@ -63,7 +63,7 @@ public class PushIntoOwned extends Refinement implements oog.re.IPushIntoOwned {
 			AstNode expression = baseTraceability.getExpression();
 			TypeDeclaration srcObjNewExprType = PushIntoOwned.getTypeDeclaration(expression);
 			String srcTyp = srcObjNewExprType.getFullyQualifiedName();
-			Set<OType> newSourceTyping = new HashSet<OType>();
+			Set<OType> newSourceTyping = new SetOType<OType>();
 
 			//Enclosing ITypeBinding
 			TypeDeclaration enclTypeDecl = MiniAstUtils.getEnclosingTypeDeclaration(baseTraceability.getExpression());
@@ -90,7 +90,7 @@ public class PushIntoOwned extends Refinement implements oog.re.IPushIntoOwned {
 								newSrcTyping = new OType("this.owned", solAlpha);
 								newSourceTyping.add(newSrcTyping);
 							}
-							Set<OType> analysisResult = new HashSet<OType>(newSourceTyping);
+							Set<OType> analysisResult = new SetOType<OType>(newSourceTyping);
 							tm.putTypeMapping(variable, analysisResult);
 
 							// Record the AU being modified directly based on the refinement

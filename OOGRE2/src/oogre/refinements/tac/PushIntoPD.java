@@ -41,7 +41,7 @@ public class PushIntoPD extends Refinement implements oog.re.IPushIntoPD  {
 			TypeDeclaration enclTypeDecl = MiniAstUtils.getEnclosingTypeDeclaration(baseTraceability.getExpression());
 			String encType = enclTypeDecl.getFullyQualifiedName();
 
-			Set<OType> newSourceTyping =  new HashSet<OType>();
+			Set<OType> newSourceTyping =  new SetOType<OType>();
 			for (Variable variable : tm.getVariables())
 				//DO not change the annotation of AUs that are method parameters or method returns
 				// srcType <: au.getType() 
@@ -66,7 +66,7 @@ public class PushIntoPD extends Refinement implements oog.re.IPushIntoPD  {
 									newSrcTyping = new OType("this.PD", solAlpha);
 									newSourceTyping.add(newSrcTyping);
 								}
-								Set<OType> analysisResult = new HashSet<OType>(newSourceTyping);
+								Set<OType> analysisResult = new SetOType<OType>(newSourceTyping);
 								tm.putTypeMapping(variable, analysisResult);
 
 								// Record the AU being modified directly based on the refinement
@@ -96,7 +96,7 @@ public class PushIntoPD extends Refinement implements oog.re.IPushIntoPD  {
 								newSourceTyping.add(newSrcTyping);
 							}
 
-							Set<OType> analysisResult = new HashSet<OType>(newSourceTyping);
+							Set<OType> analysisResult = new SetOType<OType>(newSourceTyping);
 							tm.putTypeMapping(variable, analysisResult);
 
 							// Record the AU being modified directly based on the refinement

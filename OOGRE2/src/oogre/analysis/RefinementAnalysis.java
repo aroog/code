@@ -32,7 +32,6 @@ import oogre.refinements.tac.BaseOperation;
 import oogre.refinements.tac.Facade;
 import oogre.refinements.tac.Heuristic;
 import oogre.refinements.tac.HeuristicOwnedLocalsVisitor;
-import oogre.refinements.tac.HeuristicOwnedVisitor;
 import oogre.refinements.tac.InferOptions;
 import oogre.refinements.tac.InferOwnedHeuristic;
 import oogre.refinements.tac.InferOwnerHeuristic;
@@ -48,6 +47,7 @@ import oogre.refinements.tac.RankingStrategy;
 import oogre.refinements.tac.Refinement;
 import oogre.refinements.tac.RefinementFactory;
 import oogre.refinements.tac.RefinementUnsupportedException;
+import oogre.refinements.tac.SetOType;
 import oogre.refinements.tac.SingletonFacade;
 import oogre.refinements.tac.SplitUp;
 import oogre.refinements.tac.TACMethod;
@@ -84,7 +84,6 @@ import edu.cmu.cs.crystal.tac.TACFlowAnalysis;
 import edu.cmu.cs.crystal.tac.eclipse.CompilationUnitTACs;
 import edu.cmu.cs.crystal.tac.eclipse.EclipseTAC;
 import edu.cmu.cs.crystal.tac.model.SourceVariable;
-import edu.cmu.cs.crystal.tac.model.TempVariable;
 import edu.cmu.cs.crystal.tac.model.Variable;
 import edu.cmu.cs.crystal.util.Pair;
 import edu.wayne.ograph.OGraph;
@@ -576,7 +575,7 @@ public class RefinementAnalysis extends AbstractCrystalMethodAnalysis {
 				TACNewExpr newExprVar = (TACNewExpr)var;
 				ITypeBinding instantiatedType = newExprVar.resolveType();
 				if(instantiatedType.isParameterizedType()){
-					Set<OType> varSet = new HashSet<OType>(tm.getAnalysisResult(var));
+					Set<OType> varSet = new SetOType(tm.getAnalysisResult(var));
 					if(varSet.size()>1){
 						RankingStrategy ranking = RankingStrategy.getInstance();
 						OType highestQualifier = ranking.pickFromSet(varSet, null);
@@ -1098,7 +1097,7 @@ public class RefinementAnalysis extends AbstractCrystalMethodAnalysis {
 					worklist.remove(selectedType);
 
 					done = false;
-					Set<OType> newSetOTypes = new HashSet<OType>();
+					Set<OType> newSetOTypes = new SetOType<OType>();
 					newSetOTypes.add(selectedType);
 					newTM.putTypeMapping(var, newSetOTypes);
 
@@ -1339,7 +1338,7 @@ public class RefinementAnalysis extends AbstractCrystalMethodAnalysis {
 					worklist.remove(selectedType);
 
 					done = false;
-					Set<OType> newSetOTypes = new HashSet<OType>();
+					Set<OType> newSetOTypes = new SetOType<OType>();
 					newSetOTypes.add(selectedType);
 					newTM.putTypeMapping(suspiciousAU, newSetOTypes);
 
@@ -2066,51 +2065,51 @@ public class RefinementAnalysis extends AbstractCrystalMethodAnalysis {
 				if(!refinement.srcObjectType().isParameterizedType()){
 					if(refinement instanceof PushIntoPD){
 						if(!refinement.getDstObject().equals("DUMMY")){
-							Set<OType> qSet = new HashSet<OType>();
+							Set<OType> qSet = new SetOType<OType>();
 							OType qualifier = new OType("this.PD",solutionIndex);
 							qSet.add(qualifier);
 							refinement.putVariableSetMap(variable, qSet);
 						}
 						else{
-							Set<OType> qSet = new HashSet<OType>();
+							Set<OType> qSet = new SetOType<OType>();
 							OType qualifier = new OType("shared","shared");
 							qSet.add(qualifier);
 							refinement.putVariableSetMap(variable, qSet);
 						}
 					}
 					else if(refinement instanceof PushIntoOwned){
-						Set<OType> qSet = new HashSet<OType>();
+						Set<OType> qSet = new SetOType<OType>();
 						OType qualifier = new OType("this.owned",solutionIndex);
 						qSet.add(qualifier);
 						refinement.putVariableSetMap(variable, qSet);
 					}
 					else if(refinement instanceof PushIntoParam){
-						Set<OType> qSet = new HashSet<OType>();
+						Set<OType> qSet = new SetOType<OType>();
 						OType qualifier = new OType("owner",solutionIndex);
 						qSet.add(qualifier);
 						refinement.putVariableSetMap(variable, qSet);
 					}
 					else if(refinement instanceof SplitUp){
 						if(refinement.getDomainName().equals("PD")){
-							Set<OType> qSet = new HashSet<OType>();
+							Set<OType> qSet = new SetOType<OType>();
 							OType qualifier = new OType("this.PD",solutionIndex);
 							qSet.add(qualifier);
 							refinement.putVariableSetMap(variable, qSet);
 						}
 						else if(refinement.getDomainName().equals("owned")){
-							Set<OType> qSet = new HashSet<OType>();
+							Set<OType> qSet = new SetOType<OType>();
 							OType qualifier = new OType("this.owned",solutionIndex);
 							qSet.add(qualifier);
 							refinement.putVariableSetMap(variable, qSet);
 						}
 						else if(refinement.getDomainName().equals("owner")){
-							Set<OType> qSet = new HashSet<OType>();
+							Set<OType> qSet = new SetOType<OType>();
 							OType qualifier = new OType("owner",solutionIndex);
 							qSet.add(qualifier);
 							refinement.putVariableSetMap(variable, qSet);
 						}
 						else{
-							Set<OType> qSet = new HashSet<OType>();
+							Set<OType> qSet = new SetOType<OType>();
 							OType qualifier = new OType("shared","shared");
 							qSet.add(qualifier);
 							refinement.putVariableSetMap(variable, qSet);

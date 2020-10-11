@@ -50,7 +50,7 @@ public class SplitUp extends Refinement {
 		HashMap<TypePair, ArrayList<TypePair>> pf = context.getPF();
 		List<String> publicMethods = null;
 		//XXX.The size of PC[O_src] is checked here.
-		Set<OType> newSourceTyping = new HashSet<OType>();
+		Set<OType> newSourceTyping = new SetOType<OType>();
 		for (Variable srcVar : this.srcVars) {
 			
 		if(getDomainName().equals("owned")){
@@ -71,7 +71,7 @@ public class SplitUp extends Refinement {
 						newSrcTyping = new OType("this.owned", solAlpha);
 						newSourceTyping.add(newSrcTyping);
 					}
-					Set<OType> analysisResult = new HashSet<OType>(newSourceTyping);
+					Set<OType> analysisResult = new SetOType<OType>(newSourceTyping);
 					tm.putTypeMapping(srcVar, analysisResult);
 
 					// Record the AU being modified directly based on the refinement
@@ -116,7 +116,7 @@ public class SplitUp extends Refinement {
 						newSourceTyping.add(newSrcTyping);
 					}
 
-					Set<OType> analysisResult = new HashSet<OType>(newSourceTyping);
+					Set<OType> analysisResult = new SetOType<OType>(newSourceTyping);
 					tm.putTypeMapping(srcVar, analysisResult);
 
 					// Record the AU being modified directly based on the refinement
@@ -139,7 +139,7 @@ public class SplitUp extends Refinement {
 					newSrcTyping = new OType("shared","shared");
 				}
 				newSourceTyping.add(newSrcTyping);
-				Set<OType> analysisResult = new HashSet<OType>(newSourceTyping);
+				Set<OType> analysisResult = new SetOType<OType>(newSourceTyping);
 				tm.putTypeMapping(srcVar, analysisResult);
 
 				// Record the AU being modified directly based on the refinement
@@ -177,7 +177,7 @@ public class SplitUp extends Refinement {
 					newSrcTyping = new OType("owner", solAlpha);
 					newSourceTyping.add(newSrcTyping);
 				}
-				Set<OType> analysisResult = new HashSet<OType>(newSourceTyping);
+				Set<OType> analysisResult = new SetOType<OType>(newSourceTyping);
 				tm.putTypeMapping(srcVar, analysisResult);
 
 				// Record the AU being modified directly based on the refinement

@@ -184,7 +184,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 				}
 				this.tm.putTypeMapping(leftHandSide, leftHandSideOType);
 			}
-			Set<OType> newleftHandSideOType = new HashSet<OType>(leftHandSideOType);
+			Set<OType> newleftHandSideOType = new SetOType<OType>(leftHandSideOType);
 
 			Variable rightHandSide = instr.getOperand();
 			varSet.add(rightHandSide);
@@ -211,11 +211,14 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 //						}
 					}
 				}
+				
+				Set<OType> newRightHandSideOType = new SetOType<OType>(rightHandSideOType);
 
-				newleftHandSideOType.retainAll(rightHandSideOType);
+				newleftHandSideOType.retainAll(newRightHandSideOType);
+				newRightHandSideOType.retainAll(newleftHandSideOType);
 				
 				this.tm.putTypeMapping(leftHandSide, newleftHandSideOType);
-				this.tm.putTypeMapping(rightHandSide, newleftHandSideOType);
+				this.tm.putTypeMapping(rightHandSide, newRightHandSideOType);
 
 				if(newleftHandSideOType.size()==0){
 					emptySetAction(instr, "The left hand side and right hand side of the assignment statement: ",varSet);
@@ -259,9 +262,10 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 		}
 		
 		operandOType.retainAll(targetOType);
+		targetOType.retainAll(operandOType);
 		
 		this.tm.putTypeMapping(operand, operandOType);
-		this.tm.putTypeMapping(target, operandOType);
+		this.tm.putTypeMapping(target, targetOType);
 		if(operandOType.size()==0){
 			emptySetAction(instr, "The left hand side and right hand side of Cast : ",varSet);
 			return value;
@@ -359,7 +363,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 //			this.tm.updateVariableTypingSet(methodVar, methodAUTypings);
 //		}
 		
-		Set<OType> methodAUTypings =  new HashSet<OType>();
+		Set<OType> methodAUTypings =  new SetOType<OType>();
 		List<Set<OType>> methodParsListTyping = new ArrayList<Set<OType>>();
 
 		List<Variable> parametersVarList = new ArrayList<Variable>();
@@ -448,14 +452,14 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 		if(parametersVarList!=null){
 			for (Variable param : parametersVarList) {
 				varSet.add(param);
-				Set<OType> paramAUTypings = new HashSet<OType>(this.tm.getTypeMapping(param));
+				Set<OType> paramAUTypings = new SetOType<OType>(this.tm.getTypeMapping(param));
 				methodParsListTyping.add(paramAUTypings);
 			}
 		}
 		List<Set<OType>> methodArgsListTyping = new ArrayList<Set<OType>>();
 		for (Variable arg : argOperands) {
 			if(!arg.resolveType().isPrimitive() && !arg.resolveType().isNullType()){
-				Set<OType> argAUTypings = new HashSet<OType>(this.tm.getTypeMapping(arg));
+				Set<OType> argAUTypings = new SetOType<OType>(this.tm.getTypeMapping(arg));
 				methodArgsListTyping.add(argAUTypings);
 			}
 		}
@@ -506,10 +510,17 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 						checkFinalInner(parametersVarList.get(i),receiver);
 					}
 					
-					Set<OType> methodArgumentSet = new HashSet<OType>(methodArgsListTyping.get(i));
+					Set<OType> methodArgumentSet = new SetOType<OType>(methodArgsListTyping.get(i));
 					createChangingQualifiers(receiverName, methodArgsListTyping.get(i), szi, methodArgumentSet);
+					
+					if(containsOnlyNPD(szi) && containsOnlyUinque(methodArgumentSet)){
+						syncUniqueAndNPD(methodArgumentSet,szi);
+						szi=methodArgumentSet;
+					}
+					else{
 					// szi == Qz
-					szi.retainAll(methodArgumentSet);
+						szi.retainAll(methodArgumentSet);
+					}
 					
 					// spi == Q1i
 					Set<OType> spi = Adaptation.adaptInSet(szi, receiverAUTypings, receiver, paramtType[i]);
@@ -528,7 +539,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 							// Check validity of lent
 							TypeConstraints.checkLentValidity(methodAUTypings, sx);
 							
-							Set<OType> newLeftHandSideTypings = new HashSet<OType>(leftHandSideTypings);
+							Set<OType> newLeftHandSideTypings = new SetOType<OType>(leftHandSideTypings);
 							createChangingQualifiers(receiverName, leftHandSideTypings, sx, newLeftHandSideTypings);
 							sx.retainAll(newLeftHandSideTypings);
 							// sx == Qx
@@ -579,6 +590,11 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 						//Substitute that with this for method the parameter
 						spi = substThatWithReceiver(spi, "this");
 						
+						// DEBUG:
+						// if(((SourceVariable)argOperands.get(i)).getSourceString().equals("freshVal")){
+						// ((SetOType<OType>)szi).setVar(argOperands.get(i));
+						// }
+						
 						this.tm.putTypeMapping(argOperands.get(i), szi);
 						if(isFromSource){
 							this.tm.putTypeMapping(parametersVarList.get(i), spi);
@@ -619,7 +635,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 						sx = Adaptation.adaptOutSet(methodAUTypings, receiverAUTypings, receiver, rBinding.getReturnType());
 						//Check if the receiver should be final
 						checkFinalInner(methodVar,receiver);
-						Set<OType> newLeftHandSideTypings = new HashSet<OType>(leftHandSideTypings);
+						Set<OType> newLeftHandSideTypings = new SetOType<OType>(leftHandSideTypings);
 						createChangingQualifiers(receiverName, leftHandSideTypings, sx, newLeftHandSideTypings);
 						sx.retainAll(newLeftHandSideTypings);
 					}
@@ -778,7 +794,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 		int i = 0;
 		List<Variable> argOperands = instr.getArgOperands();
 		for (Variable arg : argOperands) {
-			if(this.tm.keySet().contains(arg)){
+			if(this.tm.containsKey(arg)){
 				IMethodBinding constMethBinding = instr.resolveBinding().getMethodDeclaration();
 				List<Variable> parametersVarList = new ArrayList<Variable>();
 				IMethod javaElement = (IMethod) constMethBinding.getJavaElement();
@@ -880,8 +896,9 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 					Set<OType> overriddenSet = this.tm.getAnalysisResult(overriddenParamVariable);
 					Set<OType> overridingSet = this.tm.getAnalysisResult(overridingVar);
 					overriddenSet.retainAll(overridingSet);
+					overridingSet.retainAll(overriddenSet);
 					this.tm.putTypeMapping(overriddenParamVariable, overriddenSet);
-					this.tm.putTypeMapping(overridingVar, overriddenSet);
+					this.tm.putTypeMapping(overridingVar, overridingSet);
 				}
 			}
 		}
@@ -998,7 +1015,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 			
 			TypeConstraints.checkLentValidity(fieldTypings, sSecond);
 			
-			Set<OType> newLeftHandSideTypings = new HashSet<OType>(leftHandSideTypings);
+			Set<OType> newLeftHandSideTypings = new SetOType<OType>(leftHandSideTypings);
 			if(leftHandSideTypings !=null && leftHandSideTypings.size()>0){
 				createChangingQualifiers(receiverName, leftHandSideTypings,	sSecond, newLeftHandSideTypings);
 				sSecond.retainAll(newLeftHandSideTypings);
@@ -1230,7 +1247,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 				// check lent validity
 				TypeConstraints.checkLentValidity(fieldTypings, sSecond);
 				
-				Set<OType> newrightHandSideTypings = new HashSet<OType>(rightHandSideTypings);
+				Set<OType> newrightHandSideTypings = new SetOType<OType>(rightHandSideTypings);
 				createChangingQualifiers(receiverName, rightHandSideTypings, sSecond, newrightHandSideTypings);
 				
 				sSecond.retainAll(newrightHandSideTypings);
@@ -1347,8 +1364,9 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 		
 		if(newExprSet!=null){
 			lhsTypingSet.retainAll(newExprSet);
+			newExprSet.retainAll(lhsTypingSet);
 			this.tm.putTypeMapping(leftHandSide, lhsTypingSet);
-			this.tm.putTypeMapping(newExprVar, lhsTypingSet);
+			this.tm.putTypeMapping(newExprVar, newExprSet);
 		}
 		
 		// Finding the qualifiers for the constructor parameters
@@ -1403,7 +1421,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 		if(parametersVarList!=null){
 			for (Variable param : parametersVarList) {
 				varSet.add(param);
-				Set<OType> paramAUTypings = new HashSet<OType>(this.tm.getTypeMapping(param));
+				Set<OType> paramAUTypings = new SetOType<OType>(this.tm.getTypeMapping(param));
 				methodParsListTyping.add(paramAUTypings);
 			}
 		}
@@ -1411,7 +1429,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 		for (Variable arg : argOperands) {
 			if(!arg.resolveType().isPrimitive() && !arg.resolveType().isNullType()){
 				varSet.add(arg);
-				Set<OType> argAUTypings = new HashSet<OType>(this.tm.getTypeMapping(arg));
+				Set<OType> argAUTypings = new SetOType<OType>(this.tm.getTypeMapping(arg));
 				methodArgsListTypings.add(argAUTypings);
 			}
 		}
@@ -1447,7 +1465,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 				// check lent validity
 				TypeConstraints.checkLentValidity(paramAUTypeMappings, szi);
 				
-				Set<OType> methodArgumentSet = new HashSet<OType>(methodArgsListTypings.get(i)); 
+				Set<OType> methodArgumentSet = new SetOType<OType>(methodArgsListTypings.get(i)); 
 				createChangingQualifiers(lhsName, methodArgsListTypings.get(i), szi, methodArgumentSet);
 				
 				// szi becomes Qz
@@ -1569,7 +1587,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 	}
 
 	private Set<OType> substThisWithThat(Set<OType> typingSet) {
-		Set<OType> substitutedSet = new HashSet<OType>();
+		Set<OType> substitutedSet = new SetOType<OType>();
 		for (OType oType : typingSet) {
 			if(oType.getInner()!=null){
 				OType substitutedType = new OType(ThatThisSubst.substThisWithThat(oType.getOwner()),ThatThisSubst.substThisWithThat(oType.getAlpha()),ThatThisSubst.substThisWithThat(oType.getInner()));
@@ -1585,7 +1603,7 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 	}
 	
 	private Set<OType> substThatWithReceiver(Set<OType> typingSet, String rcvName) {
-		Set<OType> substitutedSet = new HashSet<OType>();
+		Set<OType> substitutedSet = new SetOType<OType>();
 		for (OType oType : typingSet) {
 			if(oType.getInner()!=null){
 				OType substitutedType = new OType(ThatThisSubst.substThatWithRec(oType.getOwner(),rcvName),ThatThisSubst.substThatWithRec(oType.getAlpha(),rcvName), ThatThisSubst.substThatWithRec(oType.getInner(),rcvName));
@@ -1846,6 +1864,55 @@ public class PushIntoOwnedTransferFunctions extends AbstractingTransferFunction<
 		refinement.append(".");
 		refinement.append(domain);
 		return refinement.toString();
+	}
+	/**
+	 * A method to check if a set only contains unique qualifiers
+	 * @param set
+	 * @return
+	 */
+	private boolean containsOnlyUinque(Set<OType> set){
+		if(set.isEmpty()){
+			return false;
+		}
+		for (OType oType : set) {
+			if(!oType.getOwner().equals("unique")){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * A method to check if a set only contains n.PD qualifiers
+	 * @param set
+	 * @return
+	 */
+	private boolean containsOnlyNPD(Set<OType> set){
+		if(set.isEmpty()){
+			return false;
+		}
+		for (OType oType : set) {
+			if(!(oType.getOwner().contains(".PD") && !oType.getOwner().contains("this.PD"))){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Synchronizing set of unique qualifiers and n.PD qualifiers
+	 * n.PD set is the result of adaptation
+	 * unique set is a set for the variable that cannot be n.PD e.g. left hand side of a new expression
+	 * This method works like an adaptation functions -> unique can flow to n.PD
+	 * @param uSet
+	 * @param nPDSet
+	 */
+	private void syncUniqueAndNPD(Set<OType> uSet, Set<OType> nPDSet){
+		uSet.clear();
+		for (OType oType : nPDSet) {
+			OType uOType = new OType("unique",oType.getAlpha());
+			uSet.add(uOType);
+		}
 	}
 }
 
